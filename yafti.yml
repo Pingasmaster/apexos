@@ -1,0 +1,95 @@
+title: Apex OS First Boot
+properties:
+  mode: "run-on-change"
+  path: "~/.config/yafti/last-run"
+actions:
+  pre:
+  - run: flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+  post:
+  - run: echo "Installation complete"
+screens:
+  first-screen:
+    source: yafti.screen.title
+    values:
+      title: "Welcome to Apex OS"
+      icon: "/var/icon.png"
+      description: |
+        Setting up essential and recommended applications.
+  applications:
+    source: yafti.screen.package
+    values:
+      title: Application Installation
+      show_terminal: true
+      package_manager: yafti.plugin.flatpak
+      groups:
+        Tier 0 - Essential Apps:
+          description: Needed for system functionality and basic use. Let this enabled unless you really know what you're doing.
+          packages:
+          - Flatseal: com.github.tchx84.Flatseal
+          - Extension Manager: com.mattjakeman.ExtensionManager
+          - Warehouse: io.github.flattool.Warehouse
+          - Bottles: com.usebottles.bottles
+          - Gearlever: it.mijorus.gearlever
+        Tier 1 - Recommended Apps:
+          description: Basic apps that are hard to live without. We recommend you enable this.
+          packages:
+          - Impression: io.gitlab.adhami3310.Impression
+          - AdwSteamGtk: io.github.Foldex.AdwSteamGtk
+          - Steam: com.valvesoftware.Steam
+          - LibreOffice: org.libreoffice.LibreOffice
+          - G4Music: com.github.neithern.g4music
+          - TextEditor: org.gnome.TextEditor
+          - Librewolf: io.gitlab.librewolf-community
+          - AddWater: dev.qwery.AddWater
+          - Ungoogled Chromium: io.github.ungoogled_software.ungoogled_chromium
+          - GIMP: org.gimp.GIMP
+          - Gwenview: org.kde.gwenview
+          - Anytype: io.anytype.anytype
+          - Upscayl: org.upscayl.Upscayl
+          - Fragments: de.haeckerfelix.Fragments
+          - Hidamari: io.github.jeffshee.Hidamari
+          - Calculator: org.gnome.Calculator
+          - Metadata Cleaner: fr.romainvigier.MetadataCleaner
+          - SteamLink: com.valvesoftware.SteamLink
+        Tier 2 - Cool Apps:
+          description: Some cool apps, not stricly necessary but practical.
+          packages:
+          - Teams for Linux: com.github.IsmaelMartinez.teams_for_linux
+          - Collision: dev.geopjr.Collision
+          - Calligraphy: dev.geopjr.Calligraphy
+          - OnlyOffice: org.onlyoffice.desktopeditors
+          - Countpile: garden.turtle.Jellybean
+          - Signal: org.signal.Signal
+          - Alpaca: com.jeffser.Alpaca
+          - Maps: org.gnome.Maps
+          - Railway: de.schmidhuberj.DieBahn
+          - Visual Studio Code but Open source: com.visualstudio.code-oss
+          - Discord: com.discordapp.Discord
+          - Switcheroo: io.gitlab.adhami3310.Converter
+          - Warp: app.drey.Warp
+          - Yuzu: org.yuzu_emu.yuzu
+        Tier 3 - Optional Apps:
+          description: If you want the complete package and a lots of apps to test what's possible on Apex OS.
+          packages:
+          - OBS Studio: com.obsproject.Studio
+          - Kdenlive: org.kde.kdenlive
+          - ProtonVPN: com.protonvpn.www
+          - Parabolic: org.nickvision.tubeconverter
+          - Android Studio: com.google.AndroidStudio
+          - Tor Browser: org.torproject.torbrowser-launcher
+          - Blender: org.blender.Blender
+          - FreeCAD: org.freecad.FreeCAD
+          - Audacity: org.audacityteam.Audacity
+          - KeePassXC: org.keepassxc.KeePassXC
+          - Bitwarden: com.bitwarden.desktop
+          - ProtonMail: me.proton.Mail
+          - Elements: im.riot.Riot
+          - Parsec: com.parsecgaming.parsec
+          - RustDesk: com.rustdesk.RustDesk
+  final-screen:
+    source: yafti.screen.title
+    values:
+      title: "Setup Complete"
+      icon: "/var/icon.png"
+      description: |
+        Your system is ready. Explore and enjoy!
