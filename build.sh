@@ -13,7 +13,7 @@ RELEASE="$(rpm -E %fedora)"
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/41/x86_64/repoview/index.html&protocol=https&redirect=1
 
 # Installs the screen package from fedora repos for advanced users
-rpm-ostree install screen vlc wget curl flatpak
+rpm-ostree install screen vlc python python-pip
 
 # Maybe install homebrew for macOS appslike Arc?
 #/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
