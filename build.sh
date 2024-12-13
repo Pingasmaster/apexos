@@ -13,15 +13,11 @@ RELEASE="$(rpm -E %fedora)"
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/41/x86_64/repoview/index.html&protocol=https&redirect=1
 
 # Installs needed packages from fedora repos
-rpm-ostree install screen vlc python python-pip plymouth-plugin-script rpm-build
+rpm-ostree install screen vlc python python-pip plymouth-plugin-script
 
 # Build apexOS theme from python script (declines an image in 202 images with various lightning to make the logo glow on boot)
 python /temp/rpm-custom-plymouth-theme/apex/fade-apex.py
 cp -r /temp/rpm-custom-plymouth-theme/apex/ /usr/share/plymouth/themes/
-# Apply the plymouth theme
-#plymouth-set-default-theme -R apex
-# Regenerate initramfs
-rpm-ostree initramfs --enable
 
 
 # Tests
@@ -34,7 +30,3 @@ rpm-ostree initramfs --enable
 #### Example for enabling a System Unit File
 
 #systemctl enable podman.socket
-
-
-# Remove rpm-build
-rpm-ostree remove rpm-build
