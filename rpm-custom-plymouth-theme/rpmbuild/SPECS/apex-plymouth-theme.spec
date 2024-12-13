@@ -10,7 +10,6 @@ Source0:	apex.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}
 BuildArch:      noarch
 Requires:       plymouth, plymouth-plugin-script, plymouth-graphics-libs, gnu-free-sans-fonts
-BuildRequires:  kernel-devel
 
 %define themedir     %{_datadir}/plymouth/themes/custom
 %define plymouthconf %{_sysconfdir}/plymouth/plymouthd.conf
