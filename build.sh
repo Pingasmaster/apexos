@@ -20,13 +20,13 @@ python /temp/rpm-custom-plymouth-theme/apex/fade-apex.py
 
 # Build apexOS theme as a rpm to install it and layer it on the immutable distro otherwise it will get reset on next boot
 # First have a tar image of the plymouth theme
-mkdir -p /temp/rpm-custom-plymouth-theme/rpmbuild/SOURCES/ /temp/rpm-custom-plymouth-theme/rpmbuild/RPMS/noarch/
-tar -cvf /temp/rpm-custom-plymouth-theme/rpmbuild/SOURCES/apex.tar.gz /temp/rpm-custom-plymouth-theme/apex
+mkdir -p /root/rpmbuild/SOURCES/
+tar -cvf /root/rpmbuild/SOURCES/apex.tar.gz /temp/rpm-custom-plymouth-theme/apex
 # Encapsulate in a RPM package
 rpmbuild -ba /temp/rpm-custom-plymouth-theme/rpmbuild/SPECS/apex-plymouth-theme.spec
 # Install the RPM package
-ls -lh /temp/rpm-custom-plymouth-theme/ /temp/rpm-custom-plymouth-theme/apex/ /temp/rpm-custom-plymouth-theme/rpmbuild/RPMS/noarch/
-rpm-ostree install /temp/rpm-custom-plymouth-theme/rpmbuild/RPMS/noarch/apex-plymouth-theme-*
+ls -lh /root/rpmbuild/RPMS/noarch/
+rpm-ostree install /root/rpmbuild/RPMS/noarch/apex-plymouth-theme-*
 # Apply the plymouth theme
 plymouth-set-default-theme -R apex
 # Regenerate initramfs
