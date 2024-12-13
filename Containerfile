@@ -56,8 +56,10 @@ COPY build.sh /tmp/build.sh
 COPY logo-500x500-dark.png /var/icon.png
 # Copy apex logo plymouth theme for boot logo
 RUN mkdir -p /usr/share/plymouth/themes/apex/ /temp/
-COPY apex/* /usr/share/plymouth/themes/apex/
 COPY rpm-custom-plymouth-theme/* /temp/rpm-custom-plymouth-theme/
+
+## Debug 
+RUN ls /temp/rpm-custom-plymouth-theme/ && ls /temp/rpm-custom-plymouth-theme/apex/
 
 # Run BlueBuild's gnome-extensions module
 RUN \
