@@ -25,7 +25,7 @@ tar -cvf /temp/rpm-custom-plymouth-theme/rpmbuild/SOURCES/apex.tar.gz /temp/rpm-
 # Encapsulate in a RPM package
 rpmbuild -ba /temp/rpm-custom-plymouth-theme/rpmbuild/SPECS/apex-plymouth-theme.spec
 # Install the RPM package
-rpm-ostree install apex-plymouth-theme-*
+rpm-ostree install /temp/rpm-custom-plymouth-theme/rpmbuild/RPMS/noarch/apex-plymouth-theme-*
 # Apply the plymouth theme
 plymouth-set-default-theme -R apex
 # Regenerate initramfs
