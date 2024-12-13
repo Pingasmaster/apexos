@@ -19,7 +19,7 @@ rpm-ostree install screen vlc python python-pip plymouth-plugin-script rpm-build
 python /temp/rpm-custom-plymouth-theme/apex/fade-apex.py
 cp -r /temp/rpm-custom-plymouth-theme/apex/ /usr/share/plymouth/themes/
 # Apply the plymouth theme
-plymouth-set-default-theme -R apex
+#plymouth-set-default-theme -R apex
 # Regenerate initramfs
 rpm-ostree initramfs --enable
 
