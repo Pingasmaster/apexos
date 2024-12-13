@@ -13,7 +13,7 @@ RELEASE="$(rpm -E %fedora)"
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/41/x86_64/repoview/index.html&protocol=https&redirect=1
 
 # Installs needed packages from fedora repos
-rpm-ostree install screen vlc python python-pip plymouth-plugin-script
+rpm-ostree install screen vlc python python-pip plymouth-plugin-script rpm-build
 
 # Build apexOS theme from python script (declines an image in 202 images with various lightning to make the logo glow on boot)
 python /temp/rpm-custom-plymouth-theme/apex/fade-apex.py
@@ -32,6 +32,8 @@ plymouth-set-default-theme -R apex
 # Regenerate initramfs
 rpm-ostree initramfs --enable
 
+
+# Tests
 # Maybe install homebrew for macOS appslike Arc? no, there's a module for that.
 #/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
@@ -41,3 +43,7 @@ rpm-ostree initramfs --enable
 #### Example for enabling a System Unit File
 
 #systemctl enable podman.socket
+
+
+# Remove rpm-build
+rpm-ostree remove rpm-build
