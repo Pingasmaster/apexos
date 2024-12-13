@@ -42,7 +42,7 @@ def adjust_lightness(image_path, output_dir, cycles=3, step=1):
 
 # Paramètres d'exécution
 image_path = "target.png"  # Chemin de l'image source
-output_dir = "output_images"  # Dossier où les images seront sauvegardées
+output_dir = "."  # Dossier où les images seront sauvegardées
 cycles = 1  # Nombre de cycles (aller-retour)
 step = 1  # Incrément de luminosité
 
