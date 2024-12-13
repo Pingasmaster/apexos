@@ -17,16 +17,7 @@ rpm-ostree install screen vlc python python-pip plymouth-plugin-script rpm-build
 
 # Build apexOS theme from python script (declines an image in 202 images with various lightning to make the logo glow on boot)
 python /temp/rpm-custom-plymouth-theme/apex/fade-apex.py
-
-# Build apexOS theme as a rpm to install it and layer it on the immutable distro otherwise it will get reset on next boot
-# First have a tar image of the plymouth theme
-mkdir -p /root/rpmbuild/SOURCES/
-tar -cvf /root/rpmbuild/SOURCES/apex.tar.gz /temp/rpm-custom-plymouth-theme/apex
-# Encapsulate in a RPM package
-rpmbuild -ba /temp/rpm-custom-plymouth-theme/rpmbuild/SPECS/apex-plymouth-theme.spec
-# Install the RPM package
-ls -lh /root/rpmbuild/RPMS/noarch/
-rpm-ostree install /root/rpmbuild/RPMS/noarch/apex-plymouth-theme-*
+cp -r /temp/rpm-custom-plymouth-theme/apex/ /usr/share/plymouth/themes/
 # Apply the plymouth theme
 plymouth-set-default-theme -R apex
 # Regenerate initramfs
