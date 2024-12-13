@@ -15,10 +15,23 @@ RELEASE="$(rpm -E %fedora)"
 # Installs needed packages from fedora repos
 rpm-ostree install screen vlc python python-pip plymouth-plugin-script
 
+# Build apexOS theme from python script (declines an image in 202 images with various lightning to make the logo glow on boot)
+python /temp/rpm-custom-plymouth-theme/apex/fade-apex.py
+
+# Build apexOS theme as a rpm to install it and layer it on the immutable distro otherwise it will get reset on next boot
+# First have a tar image of the plymouth theme
+mkdir -p /temp/rpm-custom-plymouth-theme/rpmbuild/SOURCES/ /temp/rpm-custom-plymouth-theme/rpmbuild/RPMS/noarch/
+tar -cvf /temp/rpm-custom-plymouth-theme/rpmbuild/SOURCES/apex.tar.gz /temp/rpm-custom-plymouth-theme/apex
+# Encapsulate in a RPM package
+rpmbuild -ba /temp/rpm-custom-plymouth-theme/rpmbuild/SPECS/apex-plymouth-theme.spec
+# Install the RPM package
+rpm-ostree install apex-plymouth-theme-*
 # Apply the plymouth theme
 plymouth-set-default-theme -R apex
+# Regenerate initramfs
+rpm-ostree initramfs --enable
 
-# Maybe install homebrew for macOS appslike Arc?
+# Maybe install homebrew for macOS appslike Arc? no, there's a module for that.
 #/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # Maybe install ollama if ever needed? But the Alpaca app replaces it
