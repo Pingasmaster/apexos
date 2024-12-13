@@ -55,10 +55,10 @@ COPY build.sh /tmp/build.sh
 # Copy icon file needed for yafti config on first boot
 COPY logo-500x500-dark.png /var/icon.png
 # Copy apex logo plymouth theme for boot logo
-RUN mkdir -p /usr/share/plymouth/themes/apex/ /temp/rpm-custom-plymouth-theme/apex/ /temp/rpm-custom-plymouth-theme/SPECS/
+RUN mkdir -p /usr/share/plymouth/themes/apex/ /temp/rpm-custom-plymouth-theme/apex/ /temp/rpm-custom-plymouth-theme/rpmbuild/SPECS/
 COPY rpm-custom-plymouth-theme/* /temp/rpm-custom-plymouth-theme/
 COPY rpm-custom-plymouth-theme/apex/* /temp/rpm-custom-plymouth-theme/apex/
-COPY rpm-custom-plymouth-theme/SPECS/* /temp/rpm-custom-plymouth-theme/SPECS/
+COPY rpm-custom-plymouth-theme/rpmbuild/SPECS/* /temp/rpm-custom-plymouth-theme/rpmbuild/SPECS/
 
 # Run BlueBuild's gnome-extensions module
 RUN \
