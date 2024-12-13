@@ -58,9 +58,6 @@ COPY logo-500x500-dark.png /var/icon.png
 RUN mkdir -p /usr/share/plymouth/themes/apex/ /temp/
 COPY rpm-custom-plymouth-theme/* /temp/rpm-custom-plymouth-theme/
 
-## Debug 
-RUN ls /temp/rpm-custom-plymouth-theme/ && ls /temp/rpm-custom-plymouth-theme/apex/
-
 # Run BlueBuild's gnome-extensions module
 RUN \
   # add in the module source code
