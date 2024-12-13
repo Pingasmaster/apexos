@@ -37,5 +37,3 @@ install -m 755 -p -D background.png progress_bar.png progress_box.png -t %{build
 %changelog
 * Wed Mar 06 2024 Klemen Klemar <klemen.klemar@hotmail.com> - 1.0.0
 - Created the theme
-* Fri Dec 03 2024 Pingasmaster
-- Adpated to Apex OS theme
