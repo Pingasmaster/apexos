@@ -54,6 +54,21 @@ COPY yafti.yml /etc/yafti.yml
 COPY build.sh /tmp/build.sh
 # Copy icon file needed for yafti config on first boot
 COPY logo-500x500-dark.png /var/icon.png
+# Copy apex logo plymouth theme for boot logo
+RUN mkdir -p /usr/share/plymouth/themes/apex/ /temp/rpm-custom-plymouth-theme/apex/
+COPY rpm-custom-plymouth-theme/* /temp/rpm-custom-plymouth-theme/
+COPY rpm-custom-plymouth-theme/apex/* /temp/rpm-custom-plymouth-theme/apex/
+COPY plymouthd.conf /etc/plymouth/
+
+# Run BlueBuild's gnome-extensions module
+RUN \
+  # add in the module source code
+  --mount=type=bind,from=ghcr.io/blue-build/modules:latest,src=/modules,dst=/tmp/modules,rw \
+  # add in the script that sets up the module run environment
+  --mount=type=bind,from=ghcr.io/blue-build/cli/build-scripts:latest,src=/scripts/,dst=/tmp/scripts/ \
+  # run the module
+  /tmp/scripts/run_module.sh 'gnome-extensions' \
+    '{"type":"gnome-extensions","install":["Bluetooth Battery Meter","Blur my Shell","Caffeine","Compiz windows effect","GSConnect","Just Perfection","Quick Lofi","Transparent Window Moving","Wallpaper Slideshow",5470]}'
 
 RUN mkdir -p /var/lib/alternatives && \
     /tmp/build.sh && \

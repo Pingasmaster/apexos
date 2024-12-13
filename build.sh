@@ -12,10 +12,16 @@ RELEASE="$(rpm -E %fedora)"
 # List of rpmfusion packages can be found here:
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/41/x86_64/repoview/index.html&protocol=https&redirect=1
 
-# Installs the screen package from fedora repos for advanced users
-rpm-ostree install screen vlc python python-pip
+# Installs needed packages from fedora repos
+rpm-ostree install screen vlc python python-pip plymouth-plugin-script
 
-# Maybe install homebrew for macOS appslike Arc?
+# Build apexOS theme from python script (declines an image in 202 images with various lightning to make the logo glow on boot)
+python /temp/rpm-custom-plymouth-theme/apex/fade-apex.py
+cp -r /temp/rpm-custom-plymouth-theme/apex/ /usr/share/plymouth/themes/
+
+
+# Tests
+# Maybe install homebrew for macOS appslike Arc? no, there's a module for that.
 #/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # Maybe install ollama if ever needed? But the Alpaca app replaces it
