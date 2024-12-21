@@ -169,7 +169,7 @@ jobs:
           image_tag: ${{ steps.generate-tags.outputs.alias_tags }} # Use the generated tags from previous steps
           version: ${{ env.VERSION }} # Ensure VERSION is defined appropriately
           variant: ${{ env.VARIANT }} # Define VARIANT as needed
-          iso_name: ${{ env.MY_IMAGE_NAME }}-${{ env.VERSION }}.iso
+          iso_name: boot.iso
       
       # Upload the ISO artifact to GitHub
       - name: Upload ISO as artifact
