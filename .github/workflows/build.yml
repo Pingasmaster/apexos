@@ -160,29 +160,40 @@ jobs:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
 
-      - name: Build ISO
+
+      - name: Build ISOs
         uses: jasonn3/build-container-installer@v1.2.3
         id: build
         with:
-          arch: ${{ env.ARCH }} # Ensure this is set correctly elsewhere in your workflow
-          image_name: ${{ env.MY_IMAGE_NAME }} # Use your environment variable for the image name
-          image_repo: ghcr.io/${{ github.repository_owner }} # Use GHCR as your container registry
-          image_tag: ${{ steps.generate-tags.outputs.alias_tags }} # Use the generated tags from previous steps
-          version: ${{ env.VERSION }} # Ensure VERSION is defined appropriately
-          variant: ${{ env.VARIANT }} # Define VARIANT as needed
-          iso_name: boot.iso
-          product: ${{ env.MY_IMAGE_NAME }}  # Product name for lorax
-          release: "41"  # Release version for lorax
-      
-      # Upload the ISO artifact to GitHub
-      - name: Upload ISO as artifact
-        id: upload
+          arch: x86_64
+          image_name: ${{ env.MY_IMAGE_NAME }}
+          image_repo: ${{ steps.registry_case.outputs.lowercase }}
+          variant: 'latest'
+          version: ${{ env.VERSION }}
+          image_tag: ${{ steps.generate-tag.outputs.tag }}
+          iso_name: ${{ env.MY_IMAGE_NAME }}-${{ steps.generate-tag.outputs.tag }}.iso
+          enable_cache_dnf: "false"
+          enable_cache_skopeo: "false"
+          enable_flatpak_dependencies: "false"
+
+      - name: Move ISOs to Upload Directory
+        id: upload-directory
+        shell: bash
+        run: |
+          ISO_UPLOAD_DIR=${{ github.workspace }}/upload
+          mkdir ${ISO_UPLOAD_DIR}
+          mv ${{ steps.build.outputs.iso_path }}/${{ steps.build.outputs.iso_name }} ${ISO_UPLOAD_DIR}
+          mv ${{ steps.build.outputs.iso_path }}/${{ steps.build.outputs.iso_name }}-CHECKSUM ${ISO_UPLOAD_DIR}
+          echo "iso-upload-dir=${ISO_UPLOAD_DIR}" >> $GITHUB_OUTPUT
+
+      - name: Upload ISOs and Checksum to Job Artifacts
+        if: github.ref_name == 'testing'
+        #if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ steps.build.outputs.iso_name }}
-          path: |
-            ${{ steps.build.outputs.iso_path }}
-            ${{ steps.build.outputs.iso_path }}-CHECKSUM
+          name: ${{ env.MY_IMAGE_NAME }}-${{ steps.generate-tag.outputs.tag }}-${{ env.VERSION}}
+          path: ${{ steps.upload-directory.outputs.iso-upload-dir }}
           if-no-files-found: error
           retention-days: 0
           compression-level: 0
+          overwrite: true
