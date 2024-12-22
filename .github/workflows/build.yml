@@ -19,6 +19,7 @@ env:
   IMAGE_REGISTRY: "ghcr.io/${{ github.repository_owner }}"  # do not edit
   VERSION: "41"
   VARIANT: "latest"
+  ARCH: "x86_64"
   
 
 concurrency:
