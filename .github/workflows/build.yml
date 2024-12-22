@@ -171,6 +171,8 @@ jobs:
           version: ${{ env.VERSION }} # Ensure VERSION is defined appropriately
           variant: ${{ env.VARIANT }} # Define VARIANT as needed
           iso_name: boot.iso
+          product: ${{ env.MY_IMAGE_NAME }}  # Product name for lorax
+          release: "41"  # Release version for lorax
       
       # Upload the ISO artifact to GitHub
       - name: Upload ISO as artifact
