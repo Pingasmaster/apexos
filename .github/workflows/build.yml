@@ -166,7 +166,7 @@ jobs:
         id: build
         with:
           arch: x86_64
-          image_name: ${{ env.MY_IMAGE_NAME }}
+          image_name: ${{ env.MY_IMAGE_NAME.lowercase }}
           image_repo: ${{ steps.registry_case.outputs.lowercase }}
           variant: 'latest'
           version: ${{ env.VERSION }}
