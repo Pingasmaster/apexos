@@ -161,7 +161,7 @@ jobs:
           COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
 
       - name: Build ISO
-        uses: jasonn3/build-container-installer@main
+        uses: jasonn3/build-container-installer@v1.2.3
         id: build
         with:
           arch: ${{ env.ARCH }} # Ensure this is set correctly elsewhere in your workflow
