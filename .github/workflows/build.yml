@@ -17,6 +17,10 @@ env:
   MY_IMAGE_NAME: "${{ github.event.repository.name }}"  # the name of the image produced by this build, matches repo names
   MY_IMAGE_DESC: "ApexOS, the first usable Linux distribution"
   IMAGE_REGISTRY: "ghcr.io/${{ github.repository_owner }}"  # do not edit
+  VERSION: "41"
+  VARIANT: "latest"
+  ARCH: "x86_64"
+  
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}-${{ inputs.brand_name}}-${{ inputs.stream_name }}
@@ -155,3 +159,41 @@ jobs:
           TAGS: ${{ steps.push.outputs.digest }}
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
+
+
+      - name: Build ISOs
+        uses: jasonn3/build-container-installer@v1.2.3
+        id: build
+        with:
+          arch: x86_64
+          image_name: ${{ env.MY_IMAGE_NAME }}
+          image_repo: ${{ steps.registry_case.outputs.lowercase }}
+          variant: 'latest'
+          version: ${{ env.VERSION }}
+          image_tag: ${{ steps.generate-tag.outputs.tag }}
+          iso_name: ${{ env.MY_IMAGE_NAME }}-${{ steps.generate-tag.outputs.tag }}.iso
+          enable_cache_dnf: "false"
+          enable_cache_skopeo: "false"
+          enable_flatpak_dependencies: "false"
+
+      - name: Move ISOs to Upload Directory
+        id: upload-directory
+        shell: bash
+        run: |
+          ISO_UPLOAD_DIR=${{ github.workspace }}/upload
+          mkdir ${ISO_UPLOAD_DIR}
+          mv ${{ steps.build.outputs.iso_path }}/${{ steps.build.outputs.iso_name }} ${ISO_UPLOAD_DIR}
+          mv ${{ steps.build.outputs.iso_path }}/${{ steps.build.outputs.iso_name }}-CHECKSUM ${ISO_UPLOAD_DIR}
+          echo "iso-upload-dir=${ISO_UPLOAD_DIR}" >> $GITHUB_OUTPUT
+
+      - name: Upload ISOs and Checksum to Job Artifacts
+        if: github.ref_name == 'testing'
+        #if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.MY_IMAGE_NAME }}-${{ steps.generate-tag.outputs.tag }}-${{ env.VERSION}}
+          path: ${{ steps.upload-directory.outputs.iso-upload-dir }}
+          if-no-files-found: error
+          retention-days: 0
+          compression-level: 0
+          overwrite: true
