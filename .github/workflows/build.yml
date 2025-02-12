@@ -160,7 +160,6 @@ jobs:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
 
-
       - name: Build ISOs
         uses: jasonn3/build-container-installer@v1.2.3
         id: build
@@ -170,12 +169,11 @@ jobs:
           image_repo: ${{ steps.registry_case.outputs.lowercase }}
           variant: 'latest'
           version: ${{ env.VERSION }}
-          image_tag: ${{ steps.generate-tags.outputs.alias_tags }}  # utilisation de l’output correct
-          iso_name: ${{ env.MY_IMAGE_NAME }}-${{ steps.generate-tags.outputs.alias_tags }}.iso
+          image_tag: ${{ steps.generate-tags.outputs.tag }}
+          iso_name: ${{ env.MY_IMAGE_NAME }}-${{ steps.generate-tags.outputs.tag }}.iso
           enable_cache_dnf: "false"
           enable_cache_skopeo: "false"
           enable_flatpak_dependencies: "false"
-
 
       - name: Move ISOs to Upload Directory
         id: upload-directory
