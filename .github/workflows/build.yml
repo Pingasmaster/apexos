@@ -170,11 +170,12 @@ jobs:
           image_repo: ${{ steps.registry_case.outputs.lowercase }}
           variant: 'latest'
           version: ${{ env.VERSION }}
-          image_tag: ${{ steps.generate-tag.outputs.tag }}
-          iso_name: ${{ env.MY_IMAGE_NAME }}-${{ steps.generate-tag.outputs.tag }}.iso
+          image_tag: ${{ steps.generate-tags.outputs.alias_tags }}  # utilisation de l’output correct
+          iso_name: ${{ env.MY_IMAGE_NAME }}-${{ steps.generate-tags.outputs.alias_tags }}.iso
           enable_cache_dnf: "false"
           enable_cache_skopeo: "false"
           enable_flatpak_dependencies: "false"
+
 
       - name: Move ISOs to Upload Directory
         id: upload-directory
