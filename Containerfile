@@ -70,10 +70,7 @@ RUN \
   /tmp/scripts/run_module.sh 'gnome-extensions' \
     '{"type":"gnome-extensions","install":["Bluetooth Battery Meter","Blur my Shell","Caffeine","Compiz windows effect","GSConnect","Just Perfection","Quick Lofi","Transparent Window Moving","Wallpaper Slideshow",5470]}'
 
-RUN mkdir -p /var/lib/alternatives && \
-    /tmp/build.sh && \
-    ostree container commit
-
+RUN mkdir -p /var/lib/alternatives && chmod +x /tmp/build.sh && /tmp/build.sh && ostree container commit
 
 RUN mkdir -p /var/lib/alternatives && \
     pip install --prefix=/usr yafti && \
