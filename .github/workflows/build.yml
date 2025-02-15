@@ -17,7 +17,7 @@ env:
   MY_IMAGE_NAME: "${{ github.event.repository.name }}"  # the name of the image produced by this build, matches repo names
   MY_IMAGE_DESC: "ApexOS, the first usable Linux distribution"
   IMAGE_REGISTRY: "ghcr.io/${{ github.repository_owner }}"  # do not edit
-  VERSION: "latest"
+  VERSION: "41"
   VARIANT: "latest"
   ARCH: "x86_64"
   
@@ -168,9 +168,9 @@ jobs:
           image_name: ${{ env.MY_IMAGE_NAME }}
           image_repo: ${{ steps.registry_case.outputs.lowercase }}
           variant: 'latest'
-          version: ${{ env.VERSION }}
+          version: "latest"
           image_tag: ${{ steps.generate-tags.outputs.tag }}
-          iso_name: ${{ env.MY_IMAGE_NAME }}-${{ steps.generate-tags.outputs.tag }}.iso
+          iso_name: boot.iso
           enable_cache_dnf: "false"
           enable_cache_skopeo: "false"
           enable_flatpak_dependencies: "false"
