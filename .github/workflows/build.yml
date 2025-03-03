@@ -168,9 +168,9 @@ jobs:
           image_name: ${{ env.MY_IMAGE_NAME }}
           image_repo: ${{ steps.registry_case.outputs.lowercase }}
           variant: 'latest'
-          version: ${{ env.VERSION }}
+          version: "${{ env.VERSION }}"
           image_tag: ${{ steps.generate-tags.outputs.tag }}
-          iso_name: ${{ env.MY_IMAGE_NAME }}-${{ steps.generate-tags.outputs.tag }}.iso
+          iso_name: boot.iso
           enable_cache_dnf: "false"
           enable_cache_skopeo: "false"
           enable_flatpak_dependencies: "false"
