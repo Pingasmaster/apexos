@@ -169,7 +169,7 @@ jobs:
           image_repo: ${{ steps.registry_case.outputs.lowercase }}
           variant: 'latest'
           version: "${{ env.VERSION }}"
-          image_tag: ${{ steps.generate-tags.outputs.tag }}
+          image_tag: latest  # Use 'latest' instead of a variable that doesn't exist
           iso_name: boot.iso
           enable_cache_dnf: "false"
           enable_cache_skopeo: "false"
