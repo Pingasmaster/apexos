@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '05 10 * * *'  # 10:05am UTC everyday
+    - cron: '0 4 * * 1'  # 4:00 AM UTC every Monday, maybe build every month to save ressources in the future
   push:
     branches:
       - main
