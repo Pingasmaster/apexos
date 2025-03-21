@@ -1,3 +1,4 @@
+[![build-apexos](https://github.com/Pingasmaster/apexos/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/Pingasmaster/apexos/actions/workflows/build.yml)
 # ApeX OS
 
 ApeX OS is a modern, user-friendly Linux distribution designed to bring the power and flexibility of Linux to a broader audience. Built on the foundations of Fedora's immutable containerized approach, it offers unparalleled stability, privacy, and compatibility for a wide range of devices.
