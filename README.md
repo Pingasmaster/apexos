@@ -23,12 +23,12 @@ ApeX OS is a modern, user-friendly Linux distribution designed to bring the powe
 
 1. A computer with 64-bit architecture.
 2. At least 8 GB of RAM and 128 GB of free disk space.
-3. A decent graphic card, no matter the brand. nvidia issues on Wayland have largely been resolved.
+3. A decent graphic card, no matter the brand. Nvidia drivers issues on Wayland have largely been resolved.
 
 ### Installation
 
 1. Download the latest ISO of ApeX OS from [here](https://apex.p-seed.com:50000/apexos.iso).
-2. Use a tool like [Etcher](https://www.balena.io/etcher/) or [Impression](https://flathub.org/apps/io.gitlab.adhami3310.Impression) to create a bootable USB.
+2. Use a tool like [Rufus](https://rufus.ie/en/) or [Impression](https://flathub.org/apps/io.gitlab.adhami3310.Impression) or [Etcher](https://www.balena.io/etcher/) to create a bootable USB.
 3. Boot from the USB drive and follow the on-screen installation instructions.
 
 ### Updating
