@@ -70,8 +70,13 @@ RUN \
   /tmp/scripts/run_module.sh 'gnome-extensions' \
     '{"type":"gnome-extensions","install":["Bluetooth Battery Meter","Blur my Shell","Caffeine","Compiz windows effect","GSConnect","Just Perfection","Quick Lofi","Transparent Window Moving","Wallpaper Slideshow",5470]}'
 
+# Install all software by running the bash script
 RUN mkdir -p /var/lib/alternatives && chmod +x /etc/build.sh && /etc/build.sh && ostree container commit
 
+# Copy true snapshot config
+COPY home-dir-backup /etc/snapper/configs/home-dir-backup
+
+# Run the yafti installer on the first boot (does not seem to work)
 RUN mkdir -p /var/lib/alternatives && \
     pip install --prefix=/usr yafti && \
     ostree container commit
