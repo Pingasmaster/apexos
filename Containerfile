@@ -69,7 +69,7 @@ RUN \
     '{"type":"gnome-extensions","install":["Bluetooth Battery Meter","Blur my Shell","Caffeine","Compiz windows effect","GSConnect","Just Perfection","Quick Lofi","Transparent Window Moving","Wallpaper Slideshow",5470]}'
 
 # Install all software by running the bash script
-RUN mkdir -p /var/lib/alternatives && set -ouex pipefail && RELEASE="$(rpm -E %fedora)" && rpm-ostree install screen vlc python python-pip plymouth-plugin-script snapper && rpm-ostree override remove firefox firefox-langpacks && python /temp/rpm-custom-plymouth-theme/apex/fade-apex.py && cp -r /temp/rpm-custom-plymouth-theme/apex/ /usr/share/plymouth/themes/ && flatpak remote-add --if-not-exists --system flathub https://flathub.org/repo/flathub.flatpakrepo && rm -rf /var/cache/flatpak /var/lib/flatpak/appstream && systemctl enable snapper-timeline.timer && flatpak install com.github.tchx84.Flatseal && ostree container commit
+RUN mkdir -p /var/lib/alternatives && set -ouex pipefail && RELEASE="$(rpm -E %fedora)" && rpm-ostree install screen vlc python python-pip plymouth-plugin-script snapper && rpm-ostree override remove firefox firefox-langpacks && python /temp/rpm-custom-plymouth-theme/apex/fade-apex.py && cp -r /temp/rpm-custom-plymouth-theme/apex/ /usr/share/plymouth/themes/ && flatpak remote-add --if-not-exists --system flathub https://flathub.org/repo/flathub.flatpakrepo && rm -rf /var/cache/flatpak /var/lib/flatpak/appstream && systemctl enable snapper-timeline.timer && flatpak install --noninteractive --assumeyes --system flathub com.github.tchx84.Flatseal && ostree container commit
 
 # Copy true snapshot config
 COPY home-dir-backup /etc/snapper/configs/home-dir-backup
