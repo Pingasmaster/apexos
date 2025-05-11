@@ -51,7 +51,7 @@ FROM ghcr.io/ublue-os/${SOURCE_IMAGE}${SOURCE_SUFFIX}:${SOURCE_TAG}
 # Copy yafti config (used to present the user with flatpak install choices on first boot)
 COPY yafti.yml /etc/yafti.yml
 # Copy build config
-COPY build.sh /tmp/build.sh
+COPY build.sh /etc/build.sh
 # Copy icon file needed for yafti config on first boot
 COPY logo-500x500-dark.png /var/icon.png
 # Copy apex logo plymouth theme for boot logo
@@ -70,7 +70,7 @@ RUN \
   /tmp/scripts/run_module.sh 'gnome-extensions' \
     '{"type":"gnome-extensions","install":["Bluetooth Battery Meter","Blur my Shell","Caffeine","Compiz windows effect","GSConnect","Just Perfection","Quick Lofi","Transparent Window Moving","Wallpaper Slideshow",5470]}'
 
-RUN mkdir -p /var/lib/alternatives && chmod +x /tmp/build.sh && /tmp/build.sh && ostree container commit
+RUN mkdir -p /var/lib/alternatives && chmod +x /etc/build.sh && /etc/build.sh && ostree container commit
 
 RUN mkdir -p /var/lib/alternatives && \
     pip install --prefix=/usr yafti && \
