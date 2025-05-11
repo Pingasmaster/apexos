@@ -13,7 +13,7 @@ RELEASE="$(rpm -E %fedora)"
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/41/x86_64/repoview/index.html&protocol=https&redirect=1
 
 # Installs needed packages from fedora repos
-rpm-ostree install screen vlc python python-pip plymouth-plugin-script snapper btrfs-assistant
+rpm-ostree install screen vlc python python-pip plymouth-plugin-script snapper
 
 # Build apexOS theme from python script (declines an image in 202 images with various lightning to make the logo glow on boot)
 python /temp/rpm-custom-plymouth-theme/apex/fade-apex.py
