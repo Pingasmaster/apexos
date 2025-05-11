@@ -47,7 +47,7 @@ FROM ghcr.io/ublue-os/${SOURCE_IMAGE}${SOURCE_SUFFIX}:${SOURCE_TAG}
 ### 3. MODIFICATIONS
 ## make modifications desired in your image and install packages by modifying the build.sh script
 ## the following RUN directive does all the things required to run "build.sh" as recommended.
-
+RUN ls /etc/flatpak/remotes.d/
 # Copy yafti config (used to present the user with flatpak install choices on first boot)
 COPY yafti.yml /etc/yafti.yml
 # Copy icon file needed for yafti config on first boot
