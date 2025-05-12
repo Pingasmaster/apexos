@@ -38,19 +38,12 @@ ARG SOURCE_SUFFIX="-main"
 ## SOURCE_TAG arg must be a version built for the specific image: eg, 39, 40, gts, latest
 ARG SOURCE_TAG="latest"
 
-
 ### 2. SOURCE IMAGE
 ## this is a standard Containerfile FROM using the build ARGs above to select the right upstream image
 FROM ghcr.io/ublue-os/${SOURCE_IMAGE}${SOURCE_SUFFIX}:${SOURCE_TAG}
 
-
 ### 3. MODIFICATIONS
-## make modifications desired in your image and install packages by modifying the build.sh script
-## the following RUN directive does all the things required to run "build.sh" as recommended.
 
-# Copy yafti config & firstboot desktop file (used to present the user with flatpak install choices on first boot)
-COPY yafti.yml /etc/yafti.yml
-COPY yafti-firstboot.desktop /etc/xdg/autostart/yafti-firstboot.desktop
 # Copy icon file needed for yafti config on first boot
 COPY logo-500x500-dark.png /var/icon.png
 # Copy apex logo plymouth theme for boot logo
@@ -69,13 +62,16 @@ RUN \
   /tmp/scripts/run_module.sh 'gnome-extensions' \
     '{"type":"gnome-extensions","install":["Bluetooth Battery Meter","Blur my Shell","Caffeine","Compiz windows effect","GSConnect","Just Perfection","Quick Lofi","Transparent Window Moving","Wallpaper Slideshow",5470]}'
 
-# Install all software by running the bash script
-RUN mkdir -p /var/lib/alternatives && set -ouex pipefail && RELEASE="$(rpm -E %fedora)" && rpm-ostree install screen vlc python python-pip plymouth-plugin-script snapper && rpm-ostree override remove firefox firefox-langpacks && python /usr/share/plymouth/themes/apex/fade-apex.py && systemctl enable snapper-timeline.timer && ostree container commit
+# Install all necessary software for plymouth & yafti & snapper, remove firefox & installs the plymouth theme
+RUN mkdir -p /var/lib/alternatives && set -ouex pipefail && RELEASE="$(rpm -E %fedora)" && rpm-ostree install screen vlc python python-pip plymouth-plugin-script snapper && rpm-ostree override remove firefox firefox-langpacks && python /usr/share/plymouth/themes/apex/fade-apex.py && ostree container commit
 
-# Copy true snapshot config
+# Copy snapper snapshot config file for /home, snapper service will be enabled later in yafti
 COPY home-dir-backup /etc/snapper/configs/home-dir-backup
 
-# Run the yafti installer on the first boot (does not seem to work)
+# Copy yafti config file & firstboot desktop file 
+COPY yafti.yml /etc/yafti.yml
+COPY yafti-firstboot.desktop /etc/xdg/autostart/yafti-firstboot.desktop
+# Installs yafti (used to present the user with flatpak install choices on first boot)
 RUN mkdir -p /var/lib/alternatives && \
     pip install --prefix=/usr yafti && \
     ostree container commit
