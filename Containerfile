@@ -43,7 +43,9 @@ ARG SOURCE_TAG="latest"
 FROM ghcr.io/ublue-os/${SOURCE_IMAGE}${SOURCE_SUFFIX}:${SOURCE_TAG}
 
 ### 3. MODIFICATIONS
-
+# Copy yafti config file & firstboot desktop file 
+COPY yafti.yml /etc/yafti.yml
+COPY yafti-firstboot.desktop /etc/xdg/autostart/yafti-firstboot.desktop
 # Copy icon file needed for yafti config on first boot
 COPY logo-500x500-dark.png /var/icon.png
 # Copy apex logo plymouth theme for boot logo
@@ -63,18 +65,10 @@ RUN \
     '{"type":"gnome-extensions","install":["Bluetooth Battery Meter","Blur my Shell","Caffeine","Compiz windows effect","GSConnect","Just Perfection","Quick Lofi","Transparent Window Moving","Wallpaper Slideshow",5470]}'
 
 # Install all necessary software for plymouth & yafti & snapper, remove firefox & installs the plymouth theme
-RUN mkdir -p /var/lib/alternatives && set -ouex pipefail && RELEASE="$(rpm -E %fedora)" && rpm-ostree install screen vlc python python-pip plymouth-plugin-script snapper && rpm-ostree override remove firefox firefox-langpacks && python /usr/share/plymouth/themes/apex/fade-apex.py && ostree container commit
+RUN mkdir -p /var/lib/alternatives && set -ouex pipefail && RELEASE="$(rpm -E %fedora)" && rpm-ostree install screen vlc python python-pip plymouth-plugin-script snapper && rpm-ostree override remove firefox firefox-langpacks && python /usr/share/plymouth/themes/apex/fade-apex.py && pip install --prefix=/usr yafti && ostree container commit
 
 # Copy snapper snapshot config file for /home, snapper service will be enabled later in yafti
 COPY home-dir-backup /etc/snapper/configs/home-dir-backup
-
-# Copy yafti config file & firstboot desktop file 
-COPY yafti.yml /etc/yafti.yml
-COPY yafti-firstboot.desktop /etc/xdg/autostart/yafti-firstboot.desktop
-# Installs yafti (used to present the user with flatpak install choices on first boot)
-RUN mkdir -p /var/lib/alternatives && \
-    pip install --prefix=/usr yafti && \
-    ostree container commit
 
 ## NOTES:
 # - /var/lib/alternatives is required to prevent failure with some RPM installs
