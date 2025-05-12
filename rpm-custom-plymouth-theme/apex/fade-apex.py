@@ -41,8 +41,8 @@ def adjust_lightness(image_path, output_dir, cycles=3, step=1):
     print(f"Images générées et sauvegardées dans le dossier : {output_dir}")
 
 # Paramètres d'exécution
-image_path = "/temp/rpm-custom-plymouth-theme/apex/target.png"  # Chemin de l'image source
-output_dir = "/temp/rpm-custom-plymouth-theme/apex/"  # Dossier où les images seront sauvegardées
+image_path = "/usr/share/plymouth/themes/apex/target.png"  # Chemin de l'image source
+output_dir = "/usr/share/plymouth/themes/apex/"  # Dossier où les images seront sauvegardées
 cycles = 1  # Nombre de cycles (aller-retour)
 step = 1  # Incrément de luminosité
 
