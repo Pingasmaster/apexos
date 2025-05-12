@@ -4,7 +4,7 @@ properties:
   path: "~/.config/yafti/last-run"
 actions:
   pre:
-  - run: flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+  - run: echo "Yafti launched"
   post:
   - run: echo "Installation complete"
 screens:
@@ -23,7 +23,7 @@ screens:
       package_manager: yafti.plugin.flatpak
       groups:
         Tier 0 - Essential Apps:
-          description: Needed for system functionality and basic use. Let this enabled unless you really know what you are doing.
+          description: Needed for system functionality and basic use. Do not disable unless you really know what you are doing.
           packages:
           - Flatseal: com.github.tchx84.Flatseal
           - Extension Manager: com.mattjakeman.ExtensionManager
