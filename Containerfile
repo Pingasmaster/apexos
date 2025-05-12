@@ -48,14 +48,15 @@ FROM ghcr.io/ublue-os/${SOURCE_IMAGE}${SOURCE_SUFFIX}:${SOURCE_TAG}
 ## make modifications desired in your image and install packages by modifying the build.sh script
 ## the following RUN directive does all the things required to run "build.sh" as recommended.
 
-# Copy yafti config (used to present the user with flatpak install choices on first boot)
+# Copy yafti config & firstboot desktop file (used to present the user with flatpak install choices on first boot)
 COPY yafti.yml /etc/yafti.yml
+COPY yafti-firstboot.desktop /etc/xdg/autostart/yafti-firstboot.desktop
 # Copy icon file needed for yafti config on first boot
 COPY logo-500x500-dark.png /var/icon.png
 # Copy apex logo plymouth theme for boot logo
-RUN mkdir -p /usr/share/plymouth/themes/apex/ /temp/rpm-custom-plymouth-theme/apex/
-COPY rpm-custom-plymouth-theme/* /temp/rpm-custom-plymouth-theme/
-COPY rpm-custom-plymouth-theme/apex/* /temp/rpm-custom-plymouth-theme/apex/
+RUN mkdir -p /usr/share/plymouth/themes/apex/
+COPY rpm-custom-plymouth-theme/* /usr/share/plymouth/themes/
+COPY rpm-custom-plymouth-theme/apex/* /usr/share/plymouth/themes/apex/
 COPY plymouthd.conf /etc/plymouth/
 
 # Run BlueBuild's gnome-extensions module
@@ -69,7 +70,7 @@ RUN \
     '{"type":"gnome-extensions","install":["Bluetooth Battery Meter","Blur my Shell","Caffeine","Compiz windows effect","GSConnect","Just Perfection","Quick Lofi","Transparent Window Moving","Wallpaper Slideshow",5470]}'
 
 # Install all software by running the bash script
-RUN mkdir -p /var/lib/alternatives && set -ouex pipefail && RELEASE="$(rpm -E %fedora)" && rpm-ostree install screen vlc python python-pip plymouth-plugin-script snapper && rpm-ostree override remove firefox firefox-langpacks && python /temp/rpm-custom-plymouth-theme/apex/fade-apex.py && cp -r /temp/rpm-custom-plymouth-theme/apex/ /usr/share/plymouth/themes/ && systemctl enable snapper-timeline.timer && ostree container commit
+RUN mkdir -p /var/lib/alternatives && set -ouex pipefail && RELEASE="$(rpm -E %fedora)" && rpm-ostree install screen vlc python python-pip plymouth-plugin-script snapper && rpm-ostree override remove firefox firefox-langpacks && python /usr/share/plymouth/themes/apex/fade-apex.py && systemctl enable snapper-timeline.timer && ostree container commit
 
 # Copy true snapshot config
 COPY home-dir-backup /etc/snapper/configs/home-dir-backup
