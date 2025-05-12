@@ -23,7 +23,7 @@ screens:
       package_manager: yafti.plugin.flatpak
       groups:
         Tier 0 - Essential Apps:
-          description: Needed for system functionality and basic use. Let this enabled unless you really know what you're doing.
+          description: Needed for system functionality and basic use. Let this enabled unless you really know what you are doing.
           packages:
           - Flatseal: com.github.tchx84.Flatseal
           - Extension Manager: com.mattjakeman.ExtensionManager
@@ -37,7 +37,7 @@ screens:
           - AdwSteamGtk: io.github.Foldex.AdwSteamGtk
           - Steam: com.valvesoftware.Steam
           - LibreOffice: org.libreoffice.LibreOffice
-          - G4Music: com.github.neithern.g4music
+          - Gapless: com.github.neithern.g4music
           - TextEditor: org.gnome.TextEditor
           - Librewolf: io.gitlab.librewolf-community
           - AddWater: dev.qwery.AddWater
@@ -51,8 +51,10 @@ screens:
           - Calculator: org.gnome.Calculator
           - Metadata Cleaner: fr.romainvigier.MetadataCleaner
           - SteamLink: com.valvesoftware.SteamLink
+          - Maps: org.gnome.Maps
+          - Railway: de.schmidhuberj.DieBahn
         Tier 2 - Cool Apps:
-          description: Some cool apps, not stricly necessary but practical.
+          description: Some cool apps, not stricly necessary but very useful.
           packages:
           - Teams for Linux: com.github.IsmaelMartinez.teams_for_linux
           - Collision: dev.geopjr.Collision
@@ -61,15 +63,13 @@ screens:
           - Countpile: garden.turtle.Jellybean
           - Signal: org.signal.Signal
           - Alpaca: com.jeffser.Alpaca
-          - Maps: org.gnome.Maps
-          - Railway: de.schmidhuberj.DieBahn
           - Visual Studio Code but Open source: com.visualstudio.code-oss
           - Discord: com.discordapp.Discord
           - Switcheroo: io.gitlab.adhami3310.Converter
           - Warp: app.drey.Warp
           - Yuzu: org.yuzu_emu.yuzu
         Tier 3 - Optional Apps:
-          description: If you want the complete package and a lots of apps to test what's possible on Apex OS.
+          description: If you want the complete package and a lots of apps to test everything that is possible on Apex OS.
           packages:
           - OBS Studio: com.obsproject.Studio
           - Kdenlive: org.kde.kdenlive
