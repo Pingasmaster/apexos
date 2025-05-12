@@ -4,7 +4,9 @@ properties:
   path: "~/.config/yafti/last-run"
 actions:
   pre:
-  - run: echo "Yafti launched"
+  - run: flatpak remote-delete --system --force fedora
+  - run: flatpak remote-add --if-not-exists --system flathub https://flathub.org/repo/flathub.flatpakrepo
+  - run: flatpak remote-add --if-not-exists --user flathub https://flathub.org/repo/flathub.flatpakrepo
   post:
   - run: echo "Installation complete"
 screens:
@@ -14,7 +16,23 @@ screens:
       title: "Welcome to Apex OS"
       icon: "/var/icon.png"
       description: |
-        Setting up essential and recommended applications.
+        Click next to set up essential and recommended applications.
+  can-we-modify-your-flatpaks:
+    source: yafti.screen.consent
+    values:
+      title: Welcome to Apex OS
+      description: |
+        We will now install the basic components for your system applications. Install and manage them via the gnome software store.
+      actions:
+        - run: snapper -c home-dir-backup create-config /home
+        - run: flatpak remote-delete --system --force fedora
+        - run: flatpak remote-delete --user --force fedora
+        - run: flatpak remote-delete --system --force fedora-testing
+        - run: flatpak remote-delete --user --force fedora-testing
+        - run: flatpak remote-add --if-not-exists --system flathub https://flathub.org/repo/flathub.flatpakrepo
+        - run: flatpak remote-add --if-not-exists --user flathub https://flathub.org/repo/flathub.flatpakrepo
+        - run: systemctl enable --now snapper-timeline.timer
+        - run: systemctl enable --now snapper-cleanup.timer
   applications:
     source: yafti.screen.package
     values:
