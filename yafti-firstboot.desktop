@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=First Boot Application Installer
+Exec=/usr/bin/yafti /etc/yafti.yml
+X-GNOME-Autostart-Phase=Panel
+X-GNOME-Autostart-enabled=true
+NoDisplay=false
+Comment=Run Yafti to install Flatpaks on first login
