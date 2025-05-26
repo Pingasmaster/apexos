@@ -1,0 +1,104 @@
+title: ApexOS - Installateur
+properties:
+  mode: "run-on-change"
+  path: "~/.config/yafti/last-run"
+actions:
+  post:
+  - run: echo "Installation terminée"
+screens:
+  first-screen:
+    source: yafti.screen.title
+    values:
+      title: "Bienvenue dans Apex OS"
+      icon: "/var/icon.png"
+      description: |
+        Clique Next pour voir les applications recommandées et nécessaires à ApexOS.
+  can-we-modify-your-flatpaks:
+    source: yafti.screen.consent
+    values:
+      title: Bienvenue dans Apex OS
+      description: |
+        Nous allons installer les composants systèmes nécessaires, veuillez entrer votre mot de passe après cette étape:
+      actions:
+        - run: sudo snapper -c home-dir-backup create-config /home & sudo systemctl enable --now snapper-cleanup.timer & sudo systemctl enable --now snapper-timeline.timer & sudo flatpak remote-delete --system --force fedora & sudo flatpak remote-delete --system --force fedora-testing & sudo flatpak remote-add --if-not-exists --system flathub https://flathub.org/repo/flathub.flatpakrepo
+        - run: flatpak remote-delete --user --force fedora
+        - run: flatpak remote-delete --user --force fedora-testing
+        - run: flatpak remote-add --if-not-exists --user flathub https://flathub.org/repo/flathub.flatpakrepo
+  applications:
+    source: yafti.screen.package
+    values:
+      title: Application Installation
+      show_terminal: true
+      package_manager: yafti.plugin.flatpak
+      groups:
+        Tier 0 - Applications essentielles:
+          description: Applications nécessaire pour les fonctionnalités système. Ne les désélectionnez que si vous savez ce que vous faites.
+          packages:
+          - Flatseal: com.github.tchx84.Flatseal
+          - Extension Manager: com.mattjakeman.ExtensionManager
+          - Warehouse: io.github.flattool.Warehouse
+          - Bottles: com.usebottles.bottles
+          - Gearlever: it.mijorus.gearlever
+        Tier 1 - Applciations recommandées :
+          description: Applications hautement recommandées, les installer est essentiel pour une bonne expérience linux.
+          packages:
+          - Impression: io.gitlab.adhami3310.Impression
+          - AdwSteamGtk: io.github.Foldex.AdwSteamGtk
+          - Steam: com.valvesoftware.Steam
+          - LibreOffice: org.libreoffice.LibreOffice
+          - Gapless: com.github.neithern.g4music
+          - TextEditor: org.gnome.TextEditor
+          - Librewolf: io.gitlab.librewolf-community
+          - AddWater: dev.qwery.AddWater
+          - Ungoogled Chromium: io.github.ungoogled_software.ungoogled_chromium
+          - GIMP: org.gimp.GIMP
+          - Gwenview: org.kde.gwenview
+          - Anytype: io.anytype.anytype
+          - Upscayl: org.upscayl.Upscayl
+          - Fragments: de.haeckerfelix.Fragments
+          - Hidamari: io.github.jeffshee.Hidamari
+          - Calculator: org.gnome.Calculator
+          - Metadata Cleaner: fr.romainvigier.MetadataCleaner
+          - SteamLink: com.valvesoftware.SteamLink
+          - Maps: org.gnome.Maps
+          - Railway: de.schmidhuberj.DieBahn
+        Tier 2 - Applications utiles:
+          description: Des applications utiles. Installez-les pour une belle expérience.
+          packages:
+          - Teams for Linux: com.github.IsmaelMartinez.teams_for_linux
+          - Collision: dev.geopjr.Collision
+          - Calligraphy: dev.geopjr.Calligraphy
+          - OnlyOffice: org.onlyoffice.desktopeditors
+          - Countpile: garden.turtle.Jellybean
+          - Signal: org.signal.Signal
+          - Alpaca: com.jeffser.Alpaca
+          - Visual Studio Code but Open source: com.visualstudio.code-oss
+          - Discord: com.discordapp.Discord
+          - Switcheroo: io.gitlab.adhami3310.Converter
+          - Warp: app.drey.Warp
+          - Yuzu: org.yuzu_emu.yuzu
+        Tier 3 - Applications optionelles:
+          description:  Si vous voulez le package au complet, ces apps sont pour vous.
+          packages:
+          - OBS Studio: com.obsproject.Studio
+          - Kdenlive: org.kde.kdenlive
+          - ProtonVPN: com.protonvpn.www
+          - Parabolic: org.nickvision.tubeconverter
+          - Android Studio: com.google.AndroidStudio
+          - Tor Browser: org.torproject.torbrowser-launcher
+          - Blender: org.blender.Blender
+          - FreeCAD: org.freecad.FreeCAD
+          - Audacity: org.audacityteam.Audacity
+          - KeePassXC: org.keepassxc.KeePassXC
+          - Bitwarden: com.bitwarden.desktop
+          - ProtonMail: me.proton.Mail
+          - Elements: im.riot.Riot
+          - Parsec: com.parsecgaming.parsec
+          - RustDesk: com.rustdesk.RustDesk
+  final-screen:
+    source: yafti.screen.title
+    values:
+      title: "Setup terminé"
+      icon: "/var/icon.png"
+      description: |
+        Votre système ApexOS est prêt!
