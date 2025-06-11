@@ -20,7 +20,7 @@ screens:
       description: |
         Nous allons installer les composants systèmes nécessaires, veuillez entrer votre mot de passe après cette étape:
       actions:
-        - run: sudo snapper -c home-dir-backup create-config /home & sudo systemctl enable --now snapper-cleanup.timer & sudo systemctl enable --now snapper-timeline.timer & sudo flatpak remote-delete --system --force fedora & sudo flatpak remote-delete --system --force fedora-testing & sudo flatpak remote-add --if-not-exists --system flathub https://flathub.org/repo/flathub.flatpakrepo
+        - run: sudo /etc/script-post-install.sh
         - run: flatpak remote-delete --user --force fedora
         - run: flatpak remote-delete --user --force fedora-testing
         - run: flatpak remote-add --if-not-exists --user flathub https://flathub.org/repo/flathub.flatpakrepo
