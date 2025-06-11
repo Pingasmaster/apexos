@@ -46,6 +46,8 @@ FROM ghcr.io/ublue-os/${SOURCE_IMAGE}${SOURCE_SUFFIX}:${SOURCE_TAG}
 # Copy yafti config file & firstboot desktop file 
 COPY yafti.yml /etc/yafti.yml
 COPY yafti-firstboot.desktop /etc/xdg/autostart/yafti-firstboot.desktop
+# Copy post install script
+COPY script-post-install.sh /etc/
 # Copy icon file needed for yafti config on first boot
 COPY logo-500x500-dark.png /var/icon.png
 # Copy apex logo plymouth theme for boot logo
