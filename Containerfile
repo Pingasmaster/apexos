@@ -51,10 +51,13 @@ COPY script-post-install.sh /etc/
 # Copy icon file needed for yafti config on first boot
 COPY logo-500x500-dark.png /var/icon.png
 # Copy apex logo plymouth theme for boot logo and make post-install script executable and commit changes
-RUN mkdir -p /usr/share/plymouth/themes/apex/ && chmod 555 /etc/script-post-install.sh && ostree container commit
+RUN tail -n 1 /etc/os-release > /etc/last-line-osrelease && rm -rf /etc/os-release && mkdir -p /usr/share/plymouth/themes/apex/ && chmod 555 /etc/script-post-install.sh && ostree container commit
 COPY rpm-custom-plymouth-theme/* /usr/share/plymouth/themes/
 COPY rpm-custom-plymouth-theme/apex/* /usr/share/plymouth/themes/apex/
 COPY plymouthd.conf /etc/plymouth/
+# Copy config file for os-release to rename to apexos
+COPY os-release /etc/
+RUN cat /etc/last-line-osrelease >> /etc/os-release && ostree container commit
 
 # Run BlueBuild's gnome-extensions module
 RUN \
