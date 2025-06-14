@@ -69,8 +69,8 @@ RUN \
   /tmp/scripts/run_module.sh 'gnome-extensions' \
     '{"type":"gnome-extensions","install":["Bluetooth Battery Meter","Blur my Shell","Caffeine","Compiz windows effect","GSConnect","Just Perfection","Quick Lofi","Transparent Window Moving","Wallpaper Slideshow",5470]}'
 
-# Install all necessary software for plymouth & yafti & snapper & wine, remove firefox & installs the plymouth theme
-RUN mkdir -p /var/lib/alternatives && set -ouex pipefail && RELEASE="$(rpm -E %fedora)" && rpm-ostree upgrade && rpm-ostree install screen vlc python python-pip plymouth-plugin-script snapper wine && rpm-ostree override remove firefox firefox-langpacks && python /usr/share/plymouth/themes/apex/fade-apex.py && update-desktop-database ~/.local/share/applications && xdg-mime default wine.desktop application/x-ms-dos-executable && pip install --prefix=/usr yafti && ostree container commit
+# Install all necessary software for plymouth & yafti & snapper, remove firefox & installs the plymouth theme
+RUN mkdir -p /var/lib/alternatives && set -ouex pipefail && RELEASE="$(rpm -E %fedora)" && rpm-ostree install screen vlc python python-pip plymouth-plugin-script snapper && rpm-ostree override remove firefox firefox-langpacks && python /usr/share/plymouth/themes/apex/fade-apex.py && update-desktop-database ~/.local/share/applications && xdg-mime default wine.desktop application/x-ms-dos-executable && pip install --prefix=/usr yafti && ostree container commit
 
 # Copy snapper snapshot config file for /home, snapper service will be enabled later in yafti
 COPY home-dir-backup /etc/snapper/configs/home-dir-backup
