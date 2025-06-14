@@ -4,3 +4,4 @@ systemctl enable --now snapper-timeline.timer
 flatpak remote-delete --system --force fedora
 flatpak remote-delete --system --force fedora-testing
 flatpak remote-add --if-not-exists --system flathub https://flathub.org/repo/flathub.flatpakrepo
+rm -rf /etc/script-post-install.sh
