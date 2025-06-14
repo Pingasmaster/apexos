@@ -35,6 +35,7 @@ screens:
           - Flatseal: com.github.tchx84.Flatseal
           - Extension Manager: com.mattjakeman.ExtensionManager
           - Warehouse: io.github.flattool.Warehouse
+          - Wine: flatpak install flathub org.winehq.Wine
           - Bottles: com.usebottles.bottles
           - Gearlever: it.mijorus.gearlever
         Tier 1 - Applciations recommandées :
