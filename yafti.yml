@@ -10,7 +10,7 @@ screens:
     source: yafti.screen.title
     values:
       title: "Bienvenue dans Apex OS"
-      icon: "/var/icon.png"
+      icon: "/etc/icon.png"
       description: |
         Clique Next pour voir les applications recommandées et nécessaires à ApexOS.
   can-we-modify-your-flatpaks:
