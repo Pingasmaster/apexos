@@ -58,7 +58,7 @@ COPY plymouthd.conf /etc/plymouth/
 # Copy config file for os-release to rename to apexos
 COPY os-release /etc/
 # Copy wallpapers
-COPY wallpaper-light.png wallpaper-dark.png /usr/share/backgrounds/apexos/
+COPY default-light.png default-dark.png /usr/share/backgrounds/apexos/
 COPY apexos.xml /usr/share/backgrounds/apexos/gnome-background-properties/
 COPY 10_apexos-background.override /usr/share/glib-2.0/schemas/
 
