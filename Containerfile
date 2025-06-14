@@ -49,7 +49,7 @@ COPY yafti-firstboot.desktop /etc/xdg/autostart/yafti-firstboot.desktop
 # Copy post install script
 COPY script-post-install.sh /etc/
 # Copy icon file needed for yafti config on first boot
-COPY logo-500x500-dark.png /var/icon.png
+COPY logo-500x500-dark.png /etc/icon.png
 # Copy apex logo plymouth theme for boot logo and make post-install script executable and commit changes
 RUN tail -n 1 /etc/os-release > /etc/last-line-osrelease && rm -rf /etc/os-release && mkdir -p /usr/share/plymouth/themes/apex/ && chmod 555 /etc/script-post-install.sh && ostree container commit
 COPY rpm-custom-plymouth-theme/* /usr/share/plymouth/themes/
@@ -59,7 +59,7 @@ COPY plymouthd.conf /etc/plymouth/
 COPY os-release /etc/
 RUN cat /etc/last-line-osrelease >> /etc/os-release && ostree container commit
 
-# Run BlueBuild's gnome-extensions module
+# Install necessary gnome extensions
 RUN \
   # add in the module source code
   --mount=type=bind,from=ghcr.io/blue-build/modules:latest,src=/modules,dst=/tmp/modules,rw \
