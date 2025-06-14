@@ -51,13 +51,16 @@ COPY script-post-install-root.sh script-post-install-user.sh /etc/
 # Copy icon file needed for yafti config on first boot
 COPY logo-500x500-dark.png /etc/icon.png
 # Copy apex logo plymouth theme for boot logo and make post-install script executable and commit changes
-RUN tail -n 1 /etc/os-release > /etc/last-line-osrelease && rm -rf /etc/os-release && mkdir -p /usr/share/plymouth/themes/apex/ && chmod 555 /etc/script-post-install-root.sh /etc/script-post-install-user.sh && ostree container commit
+RUN tail -n 1 /etc/os-release > /etc/last-line-osrelease && rm -rf /etc/os-release && mkdir -p /usr/share/plymouth/themes/apex/ && chmod 555 /etc/script-post-install-root.sh /etc/script-post-install-user.sh && mkdir -p /usr/share/backgrounds/apexos/ && ostree container commit
 COPY rpm-custom-plymouth-theme/* /usr/share/plymouth/themes/
 COPY rpm-custom-plymouth-theme/apex/* /usr/share/plymouth/themes/apex/
 COPY plymouthd.conf /etc/plymouth/
 # Copy config file for os-release to rename to apexos
 COPY os-release /etc/
-RUN cat /etc/last-line-osrelease >> /etc/os-release && ostree container commit
+# Copy wallpapers
+COPY wallpaper-light.png wallpaper-dark.png /usr/share/backgrounds/apexos/
+COPY apexos.xml /usr/share/backgrounds/apexos/gnome-background-properties/
+COPY 10_apexos-background.override /usr/share/glib-2.0/schemas/
 
 # Install necessary gnome extensions
 RUN \
@@ -70,7 +73,7 @@ RUN \
     '{"type":"gnome-extensions","install":["Bluetooth Battery Meter","Blur my Shell","Caffeine","Compiz windows effect","GSConnect","Just Perfection","Quick Lofi","Transparent Window Moving","Wallpaper Slideshow",5470]}'
 
 # Install all necessary software for plymouth & yafti & snapper, remove firefox & installs the plymouth theme
-RUN mkdir -p /var/lib/alternatives && set -ouex pipefail && RELEASE="$(rpm -E %fedora)" && rpm-ostree install screen vlc python python-pip plymouth-plugin-script snapper && rpm-ostree override remove firefox firefox-langpacks && python /usr/share/plymouth/themes/apex/fade-apex.py && pip install --prefix=/usr yafti && ostree container commit
+RUN mkdir -p /var/lib/alternatives && set -ouex pipefail && RELEASE="$(rpm -E %fedora)" && cat /etc/last-line-osrelease >> /etc/os-release && rpm-ostree install screen vlc python python-pip plymouth-plugin-script snapper && rpm-ostree override remove firefox firefox-langpacks && python /usr/share/plymouth/themes/apex/fade-apex.py && pip install --prefix=/usr yafti && ostree container commit
 
 # Copy snapper snapshot config file for /home, snapper service will be enabled later in yafti
 COPY home-dir-backup /etc/snapper/configs/home-dir-backup
