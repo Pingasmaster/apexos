@@ -17,4 +17,6 @@ EOF
 # Once this file is installed, these two commands are run to update and set wine by default for .exe in the file explorer:
 update-desktop-database ~/.local/share/applications
 xdg-mime default wine.desktop application/x-ms-dos-executable
+# Replace the icons fedora icons by apexos ones by rebuilding the icon cache (maybe unecessary?)
+gtk-update-icon-cache /usr/share/icons/hicolor
 rm -f /etc/script-post-install-user.sh
