@@ -8,4 +8,6 @@ systemctl enable --now snapper-timeline.timer
 flatpak remote-delete --system --force fedora
 flatpak remote-delete --system --force fedora-testing
 flatpak remote-add --if-not-exists --system flathub https://flathub.org/repo/flathub.flatpakrepo
+# Recompile glib schemas to apply default wallpapers
+glib-compile-schemas /usr/share/glib-2.0/schemas/
 rm -f /etc/script-post-install-root.sh
