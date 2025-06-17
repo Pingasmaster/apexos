@@ -97,6 +97,6 @@ screens:
     source: yafti.screen.title
     values:
       title: "Setup Complete"
-      icon: "/var/icon.png"
+      icon: "/etc/icon.png"
       description: |
         Your system is ready. Explore and enjoy!
