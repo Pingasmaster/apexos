@@ -50,7 +50,7 @@ COPY yafti-firstboot.desktop /etc/xdg/autostart/yafti-firstboot.desktop
 COPY script-post-install-root.sh script-post-install-user.sh /etc/
 # Copy icon file needed for yafti config on first boot
 COPY icon.png /etc/icon.png
-# Copy system icons for apexos
+# Copy system icons for apexos for the GNOME theme
 COPY logo-16x16.png /usr/share/icons/hicolor/16x16/apps/apexos-logo-icon.png
 COPY logo-22x22.png /usr/share/icons/hicolor/22x22/apps/apexos-logo-icon.png
 COPY logo-24x24.png /usr/share/icons/hicolor/24x24/apps/apexos-logo-icon.png
@@ -59,8 +59,38 @@ COPY logo-32x32.png /usr/share/icons/hicolor/32x32/apps/apexos-logo-icon.png
 COPY logo-36x36.png /usr/share/icons/hicolor/36x36/apps/apexos-logo-icon.png
 COPY logo-48x48.png /usr/share/icons/hicolor/48x48/apps/apexos-logo-icon.png
 COPY logo-96x96.png /usr/share/icons/hicolor/96x96/apps/apexos-logo-icon.png
-# Copy apex logo plymouth theme for boot logo and make post-install script executable and commit changes, also change the os-release to be correct and gets rid of fedora's icons
-RUN tail -n 1 /etc/os-release > /etc/last-line-osrelease && rm -rf /etc/os-release && mkdir -p /usr/share/plymouth/themes/apex/ && chmod 555 /etc/script-post-install-root.sh /etc/script-post-install-user.sh && mkdir -p /usr/share/backgrounds/apexos/ && rm -rf /usr/share/icons/hicolor/16x16/apps/fedora-logo-icon.png /usr/share/icons/hicolor/22x22/apps/fedora-logo-icon.png /usr/share/icons/hicolor/24x24/apps/fedora-logo-icon.png /usr/share/icons/hicolor/256x256/apps/fedora-logo-icon.png /usr/share/icons/hicolor/32x32/apps/fedora-logo-icon.png /usr/share/icons/hicolor/36x36/apps/fedora-logo-icon.png /usr/share/icons/hicolor/48x48/apps/fedora-logo-icon.png /usr/share/icons/hicolor/96x96/apps/fedora-logo-icon.png && ostree container commit
+# Copy system icons for apexos for the KDE theme
+COPY logo-16x16.png /usr/share/icons/oxygen/16x16/places/start-here-kde-fedora.png
+COPY logo-22x22.png /usr/share/icons/oxygen/22x22/places/start-here-kde-fedora.png
+COPY logo-24x24.png /usr/share/icons/oxygen/24x24/places/start-here-kde-fedora.png
+COPY logo-256x256.png /usr/share/icons/oxygen/256x526/places/start-here-kde-fedora.png
+COPY logo-32x32.png /usr/share/icons/oxygen/32x32/places/start-here-kde-fedora.png
+COPY logo-36x36.png /usr/share/icons/oxygen/36x36/places/start-here-kde-fedora.png
+COPY logo-48x48.png /usr/share/icons/oxygen/48x48/places/start-here-kde-fedora.png
+COPY logo-96x96.png /usr/share/icons/oxygen/96x96/places/start-here-kde-fedora.png
+# Copy apex logo plymouth theme for boot logo and make post-install script executable and commit changes, also change the os-release to be correct and gets rid of fedora icons
+RUN tail -n 1 /etc/os-release > /etc/last-line-osrelease && \
+rm -rf /etc/os-release && \
+mkdir -p /usr/share/plymouth/themes/apex/ && \
+chmod 555 /etc/script-post-install-root.sh /etc/script-post-install-user.sh && \
+mkdir -p /usr/share/backgrounds/apexos/ && \
+rm -rf /usr/share/icons/hicolor/16x16/apps/fedora-logo-icon.png \
+/usr/share/icons/hicolor/22x22/apps/fedora-logo-icon.png \
+/usr/share/icons/hicolor/24x24/apps/fedora-logo-icon.png \
+/usr/share/icons/hicolor/256x256/apps/fedora-logo-icon.png \
+/usr/share/icons/hicolor/32x32/apps/fedora-logo-icon.png \
+/usr/share/icons/hicolor/36x36/apps/fedora-logo-icon.png \
+/usr/share/icons/hicolor/48x48/apps/fedora-logo-icon.png \
+/usr/share/icons/hicolor/96x96/apps/fedora-logo-icon.png \
+/usr/share/icons/oxygen/16x16/places/start-here-kde-fedora.png \
+/usr/share/icons/oxygen/22x22/places/start-here-kde-fedora.png \
+/usr/share/icons/oxygen/24x24/places/start-here-kde-fedora.png \
+/usr/share/icons/oxygen/256x256/places/start-here-kde-fedora.png \
+/usr/share/icons/oxygen/32x32/places/start-here-kde-fedora.png \
+/usr/share/icons/oxygen/36x36/places/start-here-kde-fedora.png \
+/usr/share/icons/oxygen/48x48/places/start-here-kde-fedora.png \
+/usr/share/icons/oxygen/96x96/places/start-here-kde-fedora.png && \
+ostree container commit
 COPY rpm-custom-plymouth-theme/* /usr/share/plymouth/themes/
 COPY rpm-custom-plymouth-theme/apex/* /usr/share/plymouth/themes/apex/
 COPY plymouthd.conf /etc/plymouth/
@@ -82,7 +112,15 @@ RUN \
     '{"type":"gnome-extensions","install":["Bluetooth Battery Meter","Blur my Shell","Caffeine","Compiz windows effect","GSConnect","Just Perfection","Quick Lofi","Transparent Window Moving","Wallpaper Slideshow",5470]}'
 
 # Install all necessary software for plymouth & yafti & snapper, remove firefox & installs the plymouth theme
-RUN mkdir -p /var/lib/alternatives && set -ouex pipefail && RELEASE="$(rpm -E %fedora)" && cat /etc/last-line-osrelease >> /etc/os-release && rpm-ostree install screen vlc python python-pip plymouth-plugin-script snapper && rpm-ostree override remove firefox firefox-langpacks && python /usr/share/plymouth/themes/apex/fade-apex.py && pip install --prefix=/usr yafti && ostree container commit
+RUN mkdir -p /var/lib/alternatives && \
+set -ouex pipefail && \
+RELEASE="$(rpm -E %fedora)" && \
+cat /etc/last-line-osrelease >> /etc/os-release && \
+rpm-ostree install screen vlc python python-pip plymouth-plugin-script snapper && \
+rpm-ostree override remove firefox firefox-langpacks && \
+python /usr/share/plymouth/themes/apex/fade-apex.py && \
+pip install --prefix=/usr yafti && \
+ostree container commit
 
 # Copy snapper snapshot config file for /home, snapper service will be enabled later in yafti
 COPY home-dir-backup /etc/snapper/configs/home-dir-backup
