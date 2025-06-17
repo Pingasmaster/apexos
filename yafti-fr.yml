@@ -98,6 +98,6 @@ screens:
     source: yafti.screen.title
     values:
       title: "Setup terminé"
-      icon: "/var/icon.png"
+      icon: "/etc/icon.png"
       description: |
         Votre système ApexOS est prêt!
