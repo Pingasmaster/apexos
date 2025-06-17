@@ -20,7 +20,7 @@ screens:
       description: |
         We will now install the basic components for your system applications. Install and manage them via the gnome software store.
       actions:
-        - run: sudo /etc/script-post-install-root.sh
+        - run: pkexec /etc/script-post-install-root.sh
         - run: /etc/script-post-install-user.sh
   applications:
     source: yafti.screen.package
