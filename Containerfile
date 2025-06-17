@@ -51,14 +51,14 @@ COPY script-post-install-root.sh script-post-install-user.sh /etc/
 # Copy icon file needed for yafti config on first boot
 COPY icon.png /etc/icon.png
 # Copy system icons for apexos
-COPY icon-16x16.png /usr/share/icons/hicolor/16x16/apps/apexos-logo-icon.png
-COPY icon-22x22.png /usr/share/icons/hicolor/22x22/apps/apexos-logo-icon.png
-COPY icon-24x24.png /usr/share/icons/hicolor/24x24/apps/apexos-logo-icon.png
-COPY icon-256x256.png /usr/share/icons/hicolor/256x256/apps/apexos-logo-icon.png
-COPY icon-32x32.png /usr/share/icons/hicolor/32x32/apps/apexos-logo-icon.png
-COPY icon-36x36.png /usr/share/icons/hicolor/36x36/apps/apexos-logo-icon.png
-COPY icon-48x48.png /usr/share/icons/hicolor/48x48/apps/apexos-logo-icon.png
-COPY icon-96x96.png /usr/share/icons/hicolor/96x96/apps/apexos-logo-icon.png
+COPY logo-16x16.png /usr/share/icons/hicolor/16x16/apps/apexos-logo-icon.png
+COPY logo-22x22.png /usr/share/icons/hicolor/22x22/apps/apexos-logo-icon.png
+COPY logo-24x24.png /usr/share/icons/hicolor/24x24/apps/apexos-logo-icon.png
+COPY logo-256x256.png /usr/share/icons/hicolor/256x256/apps/apexos-logo-icon.png
+COPY logo-32x32.png /usr/share/icons/hicolor/32x32/apps/apexos-logo-icon.png
+COPY logo-36x36.png /usr/share/icons/hicolor/36x36/apps/apexos-logo-icon.png
+COPY logo-48x48.png /usr/share/icons/hicolor/48x48/apps/apexos-logo-icon.png
+COPY logo-96x96.png /usr/share/icons/hicolor/96x96/apps/apexos-logo-icon.png
 # Copy apex logo plymouth theme for boot logo and make post-install script executable and commit changes, also change the os-release to be correct and gets rid of fedora's icons
 RUN tail -n 1 /etc/os-release > /etc/last-line-osrelease && rm -rf /etc/os-release && mkdir -p /usr/share/plymouth/themes/apex/ && chmod 555 /etc/script-post-install-root.sh /etc/script-post-install-user.sh && mkdir -p /usr/share/backgrounds/apexos/ && rm -rf /usr/share/icons/hicolor/16x16/apps/fedora-logo-icon.png /usr/share/icons/hicolor/22x22/apps/fedora-logo-icon.png /usr/share/icons/hicolor/24x24/apps/fedora-logo-icon.png /usr/share/icons/hicolor/256x256/apps/fedora-logo-icon.png /usr/share/icons/hicolor/32x32/apps/fedora-logo-icon.png /usr/share/icons/hicolor/36x36/apps/fedora-logo-icon.png /usr/share/icons/hicolor/48x48/apps/fedora-logo-icon.png /usr/share/icons/hicolor/96x96/apps/fedora-logo-icon.png && ostree container commit
 COPY rpm-custom-plymouth-theme/* /usr/share/plymouth/themes/
