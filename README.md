@@ -1,7 +1,7 @@
 [![build-apexos](https://github.com/Pingasmaster/apexos/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/Pingasmaster/apexos/actions/workflows/build.yml)
-# ApeX OS
+# ApeX OS (Pre-alpha PoC)
 
-ApeX OS is a modern, user-friendly Linux distribution designed to bring the power and flexibility of Linux to a broader audience. Built on the foundations of Fedora's immutable containerized approach, it offers unparalleled stability, privacy, and compatibility for a wide range of devices.
+ApeX OS is a modern, user-friendly Linux distribution designed to bring the power and flexibility of Linux to a broader audience by leveraging native wine compatiblity with Windows apps. Built on the foundations of Fedora's immutable containerized approach, it offers unparalleled stability, privacy, and compatibility for a wide range of devices.
 
 ## Features
 
@@ -11,6 +11,7 @@ ApeX OS is a modern, user-friendly Linux distribution designed to bring the powe
 - **User-Friendly**: Intuitive interface and streamlined workflows for those transitioning from Windows.
 - **Built-In Compatibility**: Includes Wine, Steam, and Flatpak support for a broad range of applications and games.
 - **Rollback Functionality**: Snapshots with rollback ensure safe updates and recovery in case of errors.
+- **Soon**: A new installer that migrates your windows apps and installs ApeX OS from Windows directly.
 
 ## Getting Started
 
@@ -22,8 +23,8 @@ ApeX OS is a modern, user-friendly Linux distribution designed to bring the powe
 ### Recommended configuration
 
 1. A computer with 64-bit architecture.
-2. At least 8 GB of RAM and 128 GB of free disk space.
-3. A decent graphic card, no matter the brand. Nvidia drivers issues on Wayland have largely been resolved.
+2. At least 8 GB of RAM and 128 GB of free disk space in an SSD.
+3. A semi-decent graphic card, no matter the brand. Note that Nvidia drivers issues on Wayland have largely been resolved.
 
 ### Installation
 
