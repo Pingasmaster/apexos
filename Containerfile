@@ -50,15 +50,7 @@ COPY yafti-firstboot.desktop /etc/xdg/autostart/yafti-firstboot.desktop
 COPY script-post-install-root.sh script-post-install-user.sh /etc/
 # Copy icon file needed for yafti config on first boot
 COPY icon.png /etc/icon.png
-# Copy system icons for apexos for the GNOME theme
-COPY logo-16x16.png /usr/share/icons/hicolor/16x16/apps/apexos-logo-icon.png
-COPY logo-22x22.png /usr/share/icons/hicolor/22x22/apps/apexos-logo-icon.png
-COPY logo-24x24.png /usr/share/icons/hicolor/24x24/apps/apexos-logo-icon.png
-COPY logo-256x256.png /usr/share/icons/hicolor/256x256/apps/apexos-logo-icon.png
-COPY logo-32x32.png /usr/share/icons/hicolor/32x32/apps/apexos-logo-icon.png
-COPY logo-36x36.png /usr/share/icons/hicolor/36x36/apps/apexos-logo-icon.png
-COPY logo-48x48.png /usr/share/icons/hicolor/48x48/apps/apexos-logo-icon.png
-COPY logo-96x96.png /usr/share/icons/hicolor/96x96/apps/apexos-logo-icon.png
+# NOTE: Pre-sized hicolor logo icons will be re-added once the final logo.png is ready.
 # Prepare directories, swap the base os-release for ours, and remove the Fedora hicolor logo icons
 RUN rm -f /etc/os-release && \
 mkdir -p /usr/share/plymouth/themes/apex/ && \

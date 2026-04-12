@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="logo.png" alt="ApeX OS" width="256">
+</p>
+
 [![build-apexos](https://github.com/Pingasmaster/apexos/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/Pingasmaster/apexos/actions/workflows/build.yml)
 
 > ## ⚠️ Project status: sunsetting
