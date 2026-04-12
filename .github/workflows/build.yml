@@ -17,13 +17,13 @@ env:
   MY_IMAGE_NAME: "${{ github.event.repository.name }}"  # the name of the image produced by this build, matches repo names
   MY_IMAGE_DESC: "ApexOS, the first usable Linux distribution"
   IMAGE_REGISTRY: "ghcr.io/${{ github.repository_owner }}"  # do not edit
-  VERSION: "42"
+  VERSION: "43"
   VARIANT: "latest"
   ARCH: "x86_64"
   
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}-${{ inputs.brand_name}}-${{ inputs.stream_name }}
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
   cancel-in-progress: true
 
 jobs:
@@ -39,7 +39,7 @@ jobs:
     steps:
       # Checkout push-to-registry action GitHub repository
       - name: Checkout Push to Registry action
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Maximize build space
         uses: ublue-os/remove-unwanted-software@v9
@@ -86,7 +86,7 @@ jobs:
 
       # Build metadata
       - name: Image Metadata
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         id: meta
         with:
           images: |
@@ -116,12 +116,12 @@ jobs:
       # https://github.com/macbre/push-to-ghcr/issues/12
       - name: Lowercase Registry
         id: registry_case
-        uses: ASzc/change-string-case-action@v6
+        uses: ASzc/change-string-case-action@v8
         with:
           string: ${{ env.IMAGE_REGISTRY }}
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -148,7 +148,7 @@ jobs:
       # to consume. For more details, review the image signing section of the README.
 
       # Sign container
-      - uses: sigstore/cosign-installer@v4.0.0
+      - uses: sigstore/cosign-installer@v4.1.1
         if: github.event_name != 'pull_request'
 
       - name: Sign container image
@@ -161,7 +161,7 @@ jobs:
           COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
 
       - name: Build ISOs
-        uses: jasonn3/build-container-installer@v1.3.0
+        uses: jasonn3/build-container-installer@v1.4.0
         id: build
         with:
           arch: x86_64
@@ -186,7 +186,7 @@ jobs:
           echo "iso-upload-dir=${ISO_UPLOAD_DIR}" >> $GITHUB_OUTPUT
           
       - name: Upload ISOs and Checksum to Job Artifacts
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.MY_IMAGE_NAME }}-${{ steps.generate-tags.outputs.alias_tags }}-${{ env.VERSION}}
           path: ${{ steps.upload-directory.outputs.iso-upload-dir }}

@@ -1,21 +1,21 @@
 # Modifies the name of the distribution globally
 NAME="ApexOS"
-VERSION="42 (Gnome Edition)"
+VERSION="43 (Gnome Edition)"
 RELEASE_TYPE=stable
 ID=apexos
-VERSION_ID=42
+VERSION_ID=43
 VERSION_CODENAME=""
-PLATFORM_ID="platform:a42"
-PRETTY_NAME="ApexOS 42 (Gnome Edition)"
+PLATFORM_ID="platform:a43"
+PRETTY_NAME="ApexOS 43 (Gnome Edition)"
 ANSI_COLOR="0;38;2;255;69;0"
 LOGO=apexos-logo-icon
 ID_LIKE="fedora ostree silverblue"
-CPE_NAME="cpe:/o:apexos:apexos:42"
+CPE_NAME="cpe:/o:apexos:apexos:43"
 DEFAULT_HOSTNAME="apexos"
 HOME_URL="https://apex.snacc.cc:50000/"
 DOCUMENTATION_URL="https://github.com/Pingasmaster/apexos"
 SUPPORT_URL="https://github.com/Pingasmaster/apexos"
 BUG_REPORT_URL="https://github.com/Pingasmaster/apexos"
-SUPPORT_END=2026-05-13
+SUPPORT_END=2026-11-12
 VARIANT="Gnome Edition"
 VARIANT_ID=gnome

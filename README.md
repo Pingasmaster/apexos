@@ -1,4 +1,9 @@
 [![build-apexos](https://github.com/Pingasmaster/apexos/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/Pingasmaster/apexos/actions/workflows/build.yml)
+
+> ## ⚠️ Project status: sunsetting
+>
+> **This is an old project.** The build still works and everything here is kept up to date, but **support will end** in the near future. Fedora, systemd, and GNOME have all moved to integrate **mandatory age-verification** mechanisms into the stack ApeX OS is built on. I will not maintain an open-source project that is engineered to work *against* its users — software should serve the person running it, never police them. Thank you to everyone who tried ApeX OS along the way.
+
 # ApeX OS (Pre-alpha PoC)
 
 ApeX OS is a modern, user-friendly Linux distribution designed to bring the power and flexibility of Linux to a broader audience by leveraging native wine compatiblity with Windows apps. Built on the foundations of Fedora's immutable containerized approach, it offers unparalleled stability, privacy, and compatibility for a wide range of devices.

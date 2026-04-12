@@ -1,4 +1,8 @@
 [org.gnome.desktop.background]
-picture-uri='file:///usr/share/backgrounds/apexos/default-light.jpg'
-picture-uri-dark='file:///usr/share/backgrounds/apexos/default-dark.jpg'
+picture-uri='file:///usr/share/backgrounds/apexos/default-light.png'
+picture-uri-dark='file:///usr/share/backgrounds/apexos/default-dark.png'
+picture-options='zoom'
+
+[org.gnome.desktop.screensaver]
+picture-uri='file:///usr/share/backgrounds/apexos/default-dark.png'
 picture-options='zoom'

@@ -2,19 +2,12 @@
 <!DOCTYPE wallpapers SYSTEM "gnome-wp-list.dtd">
 <wallpapers>
   <wallpaper deleted="false">
-    <name>ApexOS (Light)</name>
+    <name>ApeX OS</name>
     <filename>/usr/share/backgrounds/apexos/default-light.png</filename>
-    <options>zoom</options>
-    <shade_type>solid</shade_type>
-    <pcolor>#ffffff</pcolor>
-    <scolor>#000000</scolor>
-  </wallpaper>
-  <wallpaper deleted="false">
-    <name>ApexOS (Dark)</name>
-    <filename>/usr/share/backgrounds/apexos/default-dark.png</filename>
+    <filename-dark>/usr/share/backgrounds/apexos/default-dark.png</filename-dark>
     <options>zoom</options>
     <shade_type>solid</shade_type>
     <pcolor>#000000</pcolor>
-    <scolor>#ffffff</scolor>
+    <scolor>#000000</scolor>
   </wallpaper>
 </wallpapers>
