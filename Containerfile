@@ -50,8 +50,6 @@ COPY yafti-firstboot.desktop /etc/xdg/autostart/yafti-firstboot.desktop
 COPY script-post-install-root.sh script-post-install-user.sh /etc/
 # Copy icon file needed for yafti config on first boot
 COPY icon.png /etc/icon.png
-# Copy source logo into the build layer; regenerated into hicolor sizes below, then removed
-COPY logo.png /tmp/apexos-logo.png
 # Prepare directories, swap the base os-release for ours, and remove the Fedora hicolor logo icons
 RUN rm -f /etc/os-release && \
 mkdir -p /usr/share/plymouth/themes/apex/ && \
@@ -88,6 +86,11 @@ RUN \
   # run the module
   /tmp/scripts/run_module.sh 'gnome-extensions' \
     '{"type":"gnome-extensions","install":["Bluetooth Battery Meter","Blur my Shell","Caffeine","Compiz windows effect","GSConnect","Just Perfection","Quick Lofi","Transparent Window Moving","Wallpaper Slideshow",5470]}'
+
+# Copy source logo into the build layer; regenerated into hicolor sizes below, then removed
+# Must be copied in the same build step that consumes it — earlier `ostree container commit`
+# calls clear /tmp, which would otherwise remove the file before the resize loop runs.
+COPY logo.png /tmp/apexos-logo.png
 
 # Install software, generate plymouth frames & hicolor icons, compile schemas, remove firefox, install yafti
 RUN mkdir -p /var/lib/alternatives && \
