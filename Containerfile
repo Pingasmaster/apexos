@@ -43,19 +43,21 @@ ARG SOURCE_TAG="latest"
 FROM ghcr.io/ublue-os/${SOURCE_IMAGE}${SOURCE_SUFFIX}:${SOURCE_TAG}
 
 ### 3. MODIFICATIONS
-# Copy yafti config file & firstboot desktop file 
+# Copy yafti config file & firstboot desktop file
 COPY yafti.yml /etc/yafti.yml
 COPY yafti-firstboot.desktop /etc/xdg/autostart/yafti-firstboot.desktop
 # Copy posts install scripts
 COPY script-post-install-root.sh script-post-install-user.sh /etc/
 # Copy icon file needed for yafti config on first boot
 COPY icon.png /etc/icon.png
-# NOTE: Pre-sized hicolor logo icons will be re-added once the final logo.png is ready.
+# Copy source logo into the build layer; regenerated into hicolor sizes below, then removed
+COPY logo.png /tmp/apexos-logo.png
 # Prepare directories, swap the base os-release for ours, and remove the Fedora hicolor logo icons
 RUN rm -f /etc/os-release && \
 mkdir -p /usr/share/plymouth/themes/apex/ && \
 mkdir -p /usr/share/backgrounds/apexos/ && \
 mkdir -p /usr/share/gnome-background-properties/ && \
+mkdir -p /etc/apexos && \
 chmod 555 /etc/script-post-install-root.sh /etc/script-post-install-user.sh && \
 rm -f /usr/share/icons/hicolor/16x16/apps/fedora-logo-icon.png \
 /usr/share/icons/hicolor/22x22/apps/fedora-logo-icon.png \
@@ -65,7 +67,6 @@ rm -f /usr/share/icons/hicolor/16x16/apps/fedora-logo-icon.png \
 /usr/share/icons/hicolor/36x36/apps/fedora-logo-icon.png \
 /usr/share/icons/hicolor/48x48/apps/fedora-logo-icon.png \
 /usr/share/icons/hicolor/96x96/apps/fedora-logo-icon.png && \
-gtk-update-icon-cache -f /usr/share/icons/hicolor && \
 ostree container commit
 COPY rpm-custom-plymouth-theme/apex/ /usr/share/plymouth/themes/apex/
 COPY plymouthd.conf /etc/plymouth/
@@ -75,6 +76,8 @@ COPY os-release /etc/
 COPY default-light.png default-dark.png /usr/share/backgrounds/apexos/
 COPY apexos.xml /usr/share/gnome-background-properties/apexos.xml
 COPY 10_apexos-background.override /usr/share/glib-2.0/schemas/
+# Stash the snapper config for /home; post-install-root applies it after snapper create-config
+COPY home-dir-backup /etc/apexos/home-dir-backup.conf
 
 # Install necessary gnome extensions
 RUN \
@@ -86,18 +89,22 @@ RUN \
   /tmp/scripts/run_module.sh 'gnome-extensions' \
     '{"type":"gnome-extensions","install":["Bluetooth Battery Meter","Blur my Shell","Caffeine","Compiz windows effect","GSConnect","Just Perfection","Quick Lofi","Transparent Window Moving","Wallpaper Slideshow",5470]}'
 
-# Install all necessary software for plymouth & yafti & snapper, remove firefox & installs the plymouth theme
+# Install software, generate plymouth frames & hicolor icons, compile schemas, remove firefox, install yafti
 RUN mkdir -p /var/lib/alternatives && \
 set -ouex pipefail && \
 RELEASE="$(rpm -E %fedora)" && \
 rpm-ostree install screen vlc python3 python3-pip python3-pillow plymouth-plugin-script snapper && \
 rpm-ostree override remove firefox firefox-langpacks && \
 python3 /usr/share/plymouth/themes/apex/fade-apex.py && \
+for S in 16 22 24 32 36 48 96 256; do \
+  mkdir -p /usr/share/icons/hicolor/${S}x${S}/apps && \
+  python3 -c "from PIL import Image; Image.open('/tmp/apexos-logo.png').resize((${S}, ${S}), Image.LANCZOS).save('/usr/share/icons/hicolor/${S}x${S}/apps/apexos-logo-icon.png')"; \
+done && \
+rm -f /tmp/apexos-logo.png && \
+gtk-update-icon-cache -f /usr/share/icons/hicolor && \
+glib-compile-schemas /usr/share/glib-2.0/schemas/ && \
 pip install --prefix=/usr --break-system-packages yafti && \
 ostree container commit
-
-# Copy snapper snapshot config file for /home, snapper service will be enabled later in yafti
-COPY home-dir-backup /etc/snapper/configs/home-dir-backup
 
 ## NOTES:
 # - /var/lib/alternatives is required to prevent failure with some RPM installs

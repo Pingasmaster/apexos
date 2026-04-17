@@ -10,8 +10,8 @@ def adjust_lightness(image_path, output_dir, cycles=3, step=1):
     :param cycles: Nombre de cycles (augmentation et diminution).
     :param step: Incrément de la luminosité en pourcentage.
     """
-    # Charger l'image source
-    image = Image.open(image_path).convert("L")  # Convertir en niveaux de gris
+    # Charger l'image source (garde le mode RGBA d'origine pour préserver les couleurs)
+    image = Image.open(image_path)
 
     # Créer le répertoire de sortie s'il n'existe pas
     os.makedirs(output_dir, exist_ok=True)
