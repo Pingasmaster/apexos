@@ -1,0 +1,13 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "ApexOS"
+            }
+        ],
+        "Id": "ApexOS",
+        "License": "CC-BY-SA-4.0",
+        "Name": "ApexOS"
+    },
+    "X-KDE-PluginInfo-Name": "ApexOS"
+}

@@ -1,0 +1,96 @@
+title: Apex OS First Boot
+properties:
+  mode: "run-on-change"
+  path: "~/.config/yafti/last-run"
+actions:
+  post:
+  - run: echo "Installation complete"
+screens:
+  first-screen:
+    source: yafti.screen.title
+    values:
+      title: "Welcome to Apex OS"
+      icon: "/etc/icon.png"
+      description: |
+        Click next to set up essential and recommended applications.
+  can-we-modify-your-flatpaks:
+    source: yafti.screen.consent
+    values:
+      title: Welcome to Apex OS
+      description: |
+        We will now install the basic components for your system applications. Install and manage them via Discover.
+      actions:
+        - run: pkexec /etc/script-post-install-root.sh
+        - run: /etc/script-post-install-user.sh
+  applications:
+    source: yafti.screen.package
+    values:
+      title: Application Installation
+      show_terminal: true
+      package_manager: yafti.plugin.flatpak
+      groups:
+        Tier 0 - Essential Apps:
+          description: Needed for system functionality and basic use. Do not disable unless you really know what you are doing.
+          packages:
+          - Flatseal: com.github.tchx84.Flatseal
+          - Warehouse: io.github.flattool.Warehouse
+          - Bottles: com.usebottles.bottles
+          - Gearlever: it.mijorus.gearlever
+        Tier 1 - Recommended Apps:
+          description: Basic apps that are hard to live without. We recommend you enable this.
+          packages:
+          - Impression: io.gitlab.adhami3310.Impression
+          - Steam: com.valvesoftware.Steam
+          - LibreOffice: org.libreoffice.LibreOffice
+          - Elisa: org.kde.elisa
+          - Kate: org.kde.kate
+          - KCalc: org.kde.kcalc
+          - Okular: org.kde.okular
+          - Gwenview: org.kde.gwenview
+          - Marble: org.kde.marble
+          - Librewolf: io.gitlab.librewolf-community
+          - Ungoogled Chromium: io.github.ungoogled_software.ungoogled_chromium
+          - GIMP: org.gimp.GIMP
+          - Anytype: io.anytype.anytype
+          - Upscayl: org.upscayl.Upscayl
+          - KTorrent: org.kde.ktorrent
+          - Metadata Cleaner: fr.romainvigier.MetadataCleaner
+          - SteamLink: com.valvesoftware.SteamLink
+          - Railway: de.schmidhuberj.DieBahn
+        Tier 2 - Cool Apps:
+          description: Some cool apps, not stricly necessary but very useful.
+          packages:
+          - Teams for Linux: com.github.IsmaelMartinez.teams_for_linux
+          - Collision: dev.geopjr.Collision
+          - OnlyOffice: org.onlyoffice.desktopeditors
+          - Signal: org.signal.Signal
+          - Alpaca: com.jeffser.Alpaca
+          - Visual Studio Code but Open source: com.visualstudio.code-oss
+          - Discord: com.discordapp.Discord
+          - Switcheroo: io.gitlab.adhami3310.Converter
+          - Warp: app.drey.Warp
+        Tier 3 - Optional Apps:
+          description: If you want the complete package and a lots of apps to test everything that is possible on Apex OS.
+          packages:
+          - OBS Studio: com.obsproject.Studio
+          - Kdenlive: org.kde.kdenlive
+          - ProtonVPN: com.protonvpn.www
+          - Parabolic: org.nickvision.tubeconverter
+          - Android Studio: com.google.AndroidStudio
+          - Tor Browser: org.torproject.torbrowser-launcher
+          - Blender: org.blender.Blender
+          - FreeCAD: org.freecad.FreeCAD
+          - Audacity: org.audacityteam.Audacity
+          - KeePassXC: org.keepassxc.KeePassXC
+          - Bitwarden: com.bitwarden.desktop
+          - ProtonMail: me.proton.Mail
+          - Elements: im.riot.Riot
+          - Parsec: com.parsecgaming.parsec
+          - RustDesk: com.rustdesk.RustDesk
+  final-screen:
+    source: yafti.screen.title
+    values:
+      title: "Setup Complete"
+      icon: "/etc/icon.png"
+      description: |
+        Your system is ready. Explore and enjoy!

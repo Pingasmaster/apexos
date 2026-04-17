@@ -1,0 +1,87 @@
+## 1. BUILD ARGS
+# KDE (Kinoite) variant of the ApexOS image. See Containerfile for the GNOME build.
+# Build args can be overridden on the commandline when building locally:
+#   podman build -f Containerfile.kde --build-arg SOURCE_TAG=43 -t apexos-kde-local .
+
+ARG SOURCE_IMAGE="kinoite"
+ARG SOURCE_SUFFIX="-main"
+ARG SOURCE_TAG="latest"
+
+### 2. SOURCE IMAGE
+FROM ghcr.io/ublue-os/${SOURCE_IMAGE}${SOURCE_SUFFIX}:${SOURCE_TAG}
+
+### 3. MODIFICATIONS
+# Copy yafti config file & firstboot desktop file (yafti is cross-DE; autostart key works on KDE too).
+# The KDE yafti config swaps GNOME-only apps (Extension Manager, gnome-text-editor, gnome-calculator,
+# gnome-maps, AddWater, Hidamari, AdwSteamGtk, Fragments, Gapless) for KDE-native equivalents
+# (Kate, KCalc, Marble, Elisa, Okular, KTorrent).
+COPY yafti-kde.yml /etc/yafti.yml
+COPY yafti-firstboot.desktop /etc/xdg/autostart/yafti-firstboot.desktop
+# Copy post-install scripts
+COPY script-post-install-root.sh script-post-install-user.sh /etc/
+# Copy icon file needed for yafti config on first boot
+COPY icon.png /etc/icon.png
+# Prepare directories, swap the base os-release for ours, and remove the Fedora hicolor logo icons
+RUN rm -f /etc/os-release && \
+mkdir -p /usr/share/plymouth/themes/apex/ && \
+mkdir -p /usr/share/wallpapers/ApexOS/contents/images && \
+mkdir -p /usr/share/wallpapers/ApexOS/contents/images_dark && \
+mkdir -p /usr/share/icons/apexos/places && \
+mkdir -p /etc/apexos && \
+chmod 555 /etc/script-post-install-root.sh /etc/script-post-install-user.sh && \
+rm -f /usr/share/icons/hicolor/16x16/apps/fedora-logo-icon.png \
+/usr/share/icons/hicolor/22x22/apps/fedora-logo-icon.png \
+/usr/share/icons/hicolor/24x24/apps/fedora-logo-icon.png \
+/usr/share/icons/hicolor/256x256/apps/fedora-logo-icon.png \
+/usr/share/icons/hicolor/32x32/apps/fedora-logo-icon.png \
+/usr/share/icons/hicolor/36x36/apps/fedora-logo-icon.png \
+/usr/share/icons/hicolor/48x48/apps/fedora-logo-icon.png \
+/usr/share/icons/hicolor/96x96/apps/fedora-logo-icon.png && \
+ostree container commit
+COPY rpm-custom-plymouth-theme/apex/ /usr/share/plymouth/themes/apex/
+COPY plymouthd.conf /etc/plymouth/
+# Copy config file for os-release to rename to apexos
+COPY os-release /etc/
+# Plasma wallpaper package — shows up in the wallpaper picker as "ApexOS".
+# default-light.png is 3840x2400, default-dark.png is 4096x2730.
+# Plasma picks images_dark/ automatically when the color scheme is dark.
+COPY default-light.png /usr/share/wallpapers/ApexOS/contents/images/3840x2400.png
+COPY default-dark.png /usr/share/wallpapers/ApexOS/contents/images_dark/4096x2730.png
+COPY apexos-wallpaper-metadata.json /usr/share/wallpapers/ApexOS/metadata.json
+# apexos icon theme (Inherits=breeze) — hosts our branded start-here-kde (kickoff menu icon).
+# Set system-wide via /etc/xdg/kdeglobals so new user sessions pick it up by default.
+COPY apexos-icon-theme.index /usr/share/icons/apexos/index.theme
+COPY apexos-kdeglobals /etc/xdg/kdeglobals
+# Stash the snapper config for /home; post-install-root applies it after snapper create-config
+COPY home-dir-backup /etc/apexos/home-dir-backup.conf
+
+# Copy source logo into the build layer; regenerated into hicolor sizes and the apexos kickoff
+# icon below, then removed. Must be copied in the same build step that consumes it — earlier
+# `ostree container commit` calls clear /tmp, which would otherwise remove the file first.
+COPY logo.png /tmp/apexos-logo.png
+
+# Install software, generate plymouth frames, hicolor icons, apexos kickoff icon, remove firefox, install yafti
+RUN mkdir -p /var/lib/alternatives && \
+set -ouex pipefail && \
+RELEASE="$(rpm -E %fedora)" && \
+rpm-ostree install screen vlc python3 python3-pip python3-pillow plymouth-plugin-script snapper && \
+rpm-ostree override remove firefox firefox-langpacks && \
+python3 /usr/share/plymouth/themes/apex/fade-apex.py && \
+for S in 16 22 24 32 36 48 96 256; do \
+  mkdir -p /usr/share/icons/hicolor/${S}x${S}/apps && \
+  python3 -c "from PIL import Image; Image.open('/tmp/apexos-logo.png').resize((${S}, ${S}), Image.LANCZOS).save('/usr/share/icons/hicolor/${S}x${S}/apps/apexos-logo-icon.png')"; \
+done && \
+for S in 16 22 24 32 48 64; do \
+  mkdir -p /usr/share/icons/apexos/places/${S} && \
+  python3 -c "from PIL import Image; Image.open('/tmp/apexos-logo.png').resize((${S}, ${S}), Image.LANCZOS).save('/usr/share/icons/apexos/places/${S}/start-here-kde.png')"; \
+done && \
+rm -f /tmp/apexos-logo.png && \
+gtk-update-icon-cache -f /usr/share/icons/hicolor && \
+gtk-update-icon-cache -f /usr/share/icons/apexos && \
+pip install --prefix=/usr --break-system-packages yafti && \
+ostree container commit
+
+## NOTES:
+# - /var/lib/alternatives is required to prevent failure with some RPM installs
+# - All RUN commands must end with ostree container commit
+#   see: https://coreos.github.io/rpm-ostree/container/#using-ostree-container-commit

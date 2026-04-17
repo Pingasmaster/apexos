@@ -22,14 +22,25 @@ env:
   ARCH: "x86_64"
   
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
-  cancel-in-progress: true
-
 jobs:
   build_push:
-    name: Build and push image
+    name: Build and push image (${{ matrix.variant }})
     runs-on: ubuntu-24.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - variant: gnome
+            containerfile: Containerfile
+            image_suffix: ""
+          - variant: kde
+            containerfile: Containerfile.kde
+            image_suffix: "-kde"
+
+    concurrency:
+      group: ${{ github.workflow }}-${{ matrix.variant }}-${{ github.ref || github.run_id }}
+      cancel-in-progress: true
 
     permissions:
       contents: read
@@ -90,12 +101,12 @@ jobs:
         id: meta
         with:
           images: |
-            ${{ env.MY_IMAGE_NAME }}
+            ${{ env.MY_IMAGE_NAME }}${{ matrix.image_suffix }}
 
           labels: |
             io.artifacthub.package.readme-url=https://raw.githubusercontent.com/${{ github.repository }}/main/README.md
-            org.opencontainers.image.description=${{ env.MY_IMAGE_DESC }}
-            org.opencontainers.image.title=${{ env.MY_IMAGE_NAME }}
+            org.opencontainers.image.description=${{ env.MY_IMAGE_DESC }} (${{ matrix.variant }})
+            org.opencontainers.image.title=${{ env.MY_IMAGE_NAME }}${{ matrix.image_suffix }}
 
       # Build image using Buildah action
       - name: Build Image
@@ -103,10 +114,8 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           containerfiles: |
-            ./Containerfile
-          # Postfix image name with -custom to make it a little more descriptive
-          # Syntax: https://docs.github.com/en/actions/learn-github-actions/expressions#format
-          image: ${{ env.MY_IMAGE_NAME }}
+            ./${{ matrix.containerfile }}
+          image: ${{ env.MY_IMAGE_NAME }}${{ matrix.image_suffix }}
           tags: |
             ${{ steps.generate-tags.outputs.alias_tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -165,7 +174,7 @@ jobs:
         id: build
         with:
           arch: x86_64
-          image_name: ${{ env.MY_IMAGE_NAME }}
+          image_name: ${{ env.MY_IMAGE_NAME }}${{ matrix.image_suffix }}
           image_repo: ${{ steps.registry_case.outputs.lowercase }}
           variant: 'latest'
           version: "${{ env.VERSION }}"
@@ -188,7 +197,7 @@ jobs:
       - name: Upload ISOs and Checksum to Job Artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: ${{ env.MY_IMAGE_NAME }}-${{ steps.generate-tags.outputs.alias_tags }}-${{ env.VERSION}}
+          name: ${{ env.MY_IMAGE_NAME }}${{ matrix.image_suffix }}-${{ steps.generate-tags.outputs.alias_tags }}-${{ env.VERSION}}
           path: ${{ steps.upload-directory.outputs.iso-upload-dir }}
           if-no-files-found: error
           retention-days: 10  # Changed from 0 to 10, the maximum allowed
